@@ -1,6 +1,15 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
+import Image from 'next/image';
+import Logo from '../public/crow-1.svg';
+import {
+  MoonSvg,
+  LogoSvg2,
+  ExpandMoreSvg,
+  PlusSvg,
+  ChevronRightSvg
+} from '../components/IconComponents';
 
 const Home: NextPage = () => {
   return (
@@ -11,9 +20,67 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="text-2xl"> New File</h1>
-      </main>
+      <div className="flex min-h-screen grow flex-row items-center justify-between bg-slate-200">
+        <nav className="flex min-h-screen w-24 flex-col items-center justify-between overflow-hidden rounded-r-3xl bg-slate-800 pb-8">
+          <div className="relative h-24 w-full overflow-hidden rounded-br-3xl bg-blue-500">
+            <div className="absolute bottom-0 h-1/2 w-full rounded-tl-3xl bg-white/10"></div>
+            <div className="p-5">
+              <LogoSvg2 classGroup="w-full h-full" className="fill-white" />
+            </div>
+          </div>
+          <div className="flex flex-col gap-8">
+            <div className="aspect-square w-12 overflow-hidden rounded-full bg-slate-900/50 p-2">
+              <MoonSvg classGroup="w-full h-full" className="fill-slate-500" />
+            </div>
+            <div className="aspect-square w-12 overflow-hidden rounded-full bg-blue-500 p-2">
+              <Image layout="responsive" alt="logo" src={Logo} />
+            </div>
+          </div>
+        </nav>
+        <main className="flex min-h-screen w-full justify-center px-12 py-12">
+          <div className="w-full max-w-4xl">
+            <header className="mb-12 flex flex-row items-center justify-between">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-5xl font-bold text-slate-800">Invoices</h1>
+                <p className="text-slate-500">There are 7 total invoices</p>
+              </div>
+              <div className="flex items-center gap-10">
+                <button className=" flex font-bold text-slate-700">
+                  Filter by status
+                  <span className="pl-2">
+                    <ExpandMoreSvg className="fill-blue-600" />
+                  </span>
+                </button>
+                <button className="flex items-center gap-4 rounded-full bg-blue-600 py-2 pl-2 pr-5 font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800">
+                  <span className="rounded-full bg-white p-2">
+                    <PlusSvg className="fill-blue-500" />
+                  </span>
+                  New Invoice
+                </button>
+              </div>
+            </header>
+            <section>
+              <ul>
+                <li className="flex items-center justify-between rounded-lg bg-white px-10 py-8">
+                  <div className="flex w-full items-center justify-between gap-4 text-slate-800">
+                    <p className="font-bold">RT3080</p>
+                    <p className="text-slate-500">Due 19 Aug 2022</p>
+                    <p className="text-slate-500">Jenien Huong</p>
+                    <p className="text-2xl font-bold">$1,800.90</p>
+                    <div className="flex items-center gap-3 rounded-lg bg-green-500/10 px-8 py-2">
+                      <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
+                      <p className="font-bold text-green-500">Paid</p>
+                    </div>
+                  </div>
+                  <div>
+                    <ChevronRightSvg classGroup="h-8 w-8 ml-6" className="fill-blue-600" />
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </main>
+      </div>
 
       <footer></footer>
     </div>
