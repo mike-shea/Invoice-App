@@ -8,6 +8,7 @@ import Nav from '../components/nav';
 import { invoiceData } from '../data/invoice-data';
 
 const Home: NextPage = () => {
+  const invoiceItemLength = invoiceData.length;
   return (
     <div className="">
       <Head>
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
         <Nav />
         <main className="flex min-h-screen w-full justify-center px-12 py-12">
           <div className="w-full max-w-4xl">
-            <Header />
+            <Header invoiceItemLength={invoiceItemLength} />
             <InvoiceList invoiceData={invoiceData} />
           </div>
         </main>
