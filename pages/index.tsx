@@ -1,16 +1,20 @@
-import { AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import useSwr from 'swr';
+import useFormRefs from '../components/useFormRefs';
+
 import Header from '../components/header';
 import InvoiceForm from '../components/InvoiceForm';
 import InvoiceList from '../components/InvoiceList';
-import { invoiceDataJson } from '../data/invoice-data';
 import Nav from '../components/nav';
-import useSwr from 'swr';
+
 import type { InputRefs, formRefsType } from '../components/types';
-import useFormRefs from '../components/useFormRefs';
+import { invoiceDataJson } from '../data/invoice-data';
+
+const initialItemCounterState = [{ id: 'itemLog-0', name: '', quantity: '0', price: '0' }];
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -18,9 +22,7 @@ const Home: NextPage = () => {
   const { data: invoiceDataSWR } = useSwr(invoiceDataJson, (args) => JSON.parse(args));
 
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
-  const [itemCounter, setItemCounter] = useState([
-    { id: 'itemLog-0', name: '', quantity: '0', price: '0' }
-  ]);
+  const [itemCounter, setItemCounter] = useState(initialItemCounterState);
 
   const { formRefs, handleInput, setHandleInput } = useFormRefs();
 

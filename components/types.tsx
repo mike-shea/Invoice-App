@@ -12,22 +12,21 @@ interface InputRefs {
   clientCountryInputRef: string | null;
   clientCompanyInputRef: string | null;
 }
+type RefObjectType = React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
 
 interface formRefsType {
-  streetAddressInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  cityInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  postalCodeInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  countryInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  companyInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientNameInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientEmailInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientStreetAddressInputRef:
-    | React.MutableRefObject<null>
-    | React.MutableRefObject<HTMLInputElement>;
-  clientCityInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientPostalCodeInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientCountryInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
-  clientCompanyInputRef: React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
+  streetAddressInputRef: RefObjectType;
+  cityInputRef: RefObjectType;
+  postalCodeInputRef: RefObjectType;
+  countryInputRef: RefObjectType;
+  companyInputRef: RefObjectType;
+  clientNameInputRef: RefObjectType;
+  clientEmailInputRef: RefObjectType;
+  clientStreetAddressInputRef: RefObjectType;
+  clientCityInputRef: RefObjectType;
+  clientPostalCodeInputRef: RefObjectType;
+  clientCountryInputRef: RefObjectType;
+  clientCompanyInputRef: RefObjectType;
 }
 
 interface ItemCounterType {
@@ -37,4 +36,4 @@ interface ItemCounterType {
   price: string;
 }
 
-export type { InputRefs, formRefsType, ItemCounterType };
+export type { InputRefs, formRefsType, ItemCounterType, RefObjectType };

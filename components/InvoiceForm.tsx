@@ -51,6 +51,7 @@ export default function InvoiceForm(props: {
       return newState;
     });
   }
+
   return (
     <>
       <motion.section

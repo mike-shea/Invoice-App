@@ -1,14 +1,14 @@
 import React from 'react';
 import InvoiceFormInputElement from './InvoiceFormInputElement';
-import type { InputRefs } from './types';
+import type { InputRefs, RefObjectType } from './types';
 
 export default function InvoiceFormFieldSetCurrent(props: {
   handleInput: InputRefs;
-  streetAddressInputRef: React.MutableRefObject<null>;
-  cityInputRef: React.MutableRefObject<null>;
-  postalCodeInputRef: React.MutableRefObject<null>;
-  countryInputRef: React.MutableRefObject<null>;
-  companyInputRef: React.MutableRefObject<null>;
+  streetAddressInputRef: RefObjectType;
+  cityInputRef: RefObjectType;
+  postalCodeInputRef: RefObjectType;
+  countryInputRef: RefObjectType;
+  companyInputRef: RefObjectType;
 }) {
   return (
     <fieldset>

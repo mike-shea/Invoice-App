@@ -1,5 +1,7 @@
+import { RefObjectType } from './types';
+
 export default function InvoiceFormInputElement(props: {
-  inputRef: React.MutableRefObject<null>;
+  inputRef: RefObjectType;
   label: string;
   prevData?: string | null;
 }) {
