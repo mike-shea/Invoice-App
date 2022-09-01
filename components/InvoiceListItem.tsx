@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { InvoiceDetails } from '../data/invoice-data';
 import { ChevronRightSvg } from './IconComponents';
 
 const statusConfig: {
@@ -13,13 +14,7 @@ const statusConfig: {
   text: ''
 };
 
-export default function SingleInvoiceItem(props: {
-  id: string;
-  paymentDueDate: string;
-  clientName: string;
-  amountDue: number;
-  status: 'paid' | 'pending' | 'draft';
-}) {
+export default function SingleInvoiceItem(props: InvoiceDetails) {
   if (props.status === 'paid') {
     statusConfig.bg = 'bg-green-500/10';
     statusConfig.circleColor = 'bg-green-500';
@@ -38,20 +33,35 @@ export default function SingleInvoiceItem(props: {
     statusConfig.textColor = 'text-slate-600';
     statusConfig.text = 'Draft';
   }
+  const amountDue = props.items.reduce(
+    (sum, current) => {
+      const itemAmount = current.price * current.quantity;
+      sum.total = sum.total + itemAmount;
+      return sum;
+    },
+    { total: 0 }
+  );
   const visualCurrency = Intl.NumberFormat('en-CA', {
     style: 'currency',
     currency: 'CAD'
-  }).format(props.amountDue / 100);
+  }).format(amountDue.total / 100);
 
-  const visualDate = new Date(props.paymentDueDate).toLocaleDateString();
+  const [currentTime, setCurrentTime] = useState(props.paymentDue);
+
+  useEffect(() => {
+    setCurrentTime((prevState) => {
+      return new Date(prevState).toLocaleDateString();
+    });
+  }, []);
+
   return (
     <li
       tabIndex={0}
       className="group flex cursor-pointer items-center justify-between rounded-lg bg-white px-10 py-8 transition ">
       <p className="flex w-36 font-bold">{props.id.toLocaleUpperCase()}</p>
       <div className="grid w-full grid-cols-3 items-center gap-4 pl-6 text-slate-800">
-        <p className="text-slate-500">Due {visualDate}</p>
-        <p className="text-slate-500">{props.clientName}</p>
+        <p className="text-slate-500">Due {currentTime}</p>
+        <p className="text-slate-500">{props.client.name}</p>
         <p className="text-2xl font-bold">{visualCurrency}</p>
       </div>
       <div className="flex gap-4 pl-4">
