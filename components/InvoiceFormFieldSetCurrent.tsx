@@ -8,7 +8,6 @@ export default function InvoiceFormFieldSetCurrent(props: {
   cityInputRef: RefObjectType;
   postalCodeInputRef: RefObjectType;
   countryInputRef: RefObjectType;
-  companyInputRef: RefObjectType;
 }) {
   return (
     <fieldset>

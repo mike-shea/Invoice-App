@@ -1,11 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { InputRefs, ItemCounterType, formRefsType } from './types';
+import { PaymentTermsEnum } from './types';
+import type { InputRefs, ItemCounterType, formRefsType, DetailsInputType } from './types';
 import InvoiceFormFieldSetCurrent from './InvoiceFormFieldSetCurrent';
 import InvoiceFormFieldSetClient from './InvoiceFormFieldSetClient';
 import InvoiceFormFieldSetItems from './InvoiceFormFieldSetItems';
+import DatePicker from 'react-datepicker';
+import InvoiceFormInputElement from './InvoiceFormInputElement';
 
 export default function InvoiceForm(props: {
+  detailsInput: DetailsInputType;
+  setDetailsInput: React.Dispatch<React.SetStateAction<DetailsInputType>>;
   handleInput: InputRefs;
   invoiceFormVisbility: boolean;
   itemCounter: ItemCounterType[];
@@ -13,13 +18,16 @@ export default function InvoiceForm(props: {
   unmountForm: () => void;
   formRefs: formRefsType;
 }) {
+  const PaymentTermsEnumToOptions = (
+    Object.keys(PaymentTermsEnum) as Array<keyof typeof PaymentTermsEnum>
+  ).map((item) => <option key={item}>{PaymentTermsEnum[item]}</option>);
+
   const fieldSetCurrentProps = {
     handleInput: props.handleInput,
     streetAddressInputRef: props.formRefs.streetAddressInputRef,
     cityInputRef: props.formRefs.cityInputRef,
     postalCodeInputRef: props.formRefs.postalCodeInputRef,
-    countryInputRef: props.formRefs.countryInputRef,
-    companyInputRef: props.formRefs.companyInputRef
+    countryInputRef: props.formRefs.countryInputRef
   };
 
   const fieldSetClientProps = {
@@ -65,21 +73,78 @@ export default function InvoiceForm(props: {
         initial={{ x: -500 }}
         animate={{ x: 0 }}
         exit={{ x: -725 }}
-        className="fixed h-screen w-3/5 overflow-hidden rounded-2xl bg-slate-100 pl-32">
+        className="fixed h-screen w-3/5 overflow-hidden rounded-2xl bg-white pl-32">
         <div className="flex h-full items-start justify-center overflow-y-scroll scroll-smooth pr-12">
           <div className="max-w-lg py-12 ">
             <h2 className="pb-12 text-3xl font-bold">New Invoice</h2>
             <form>
               <InvoiceFormFieldSetCurrent {...fieldSetCurrentProps} />
               <InvoiceFormFieldSetClient {...fieldSetClientProps} />
+              <fieldset>
+                <legend className="pb-2 pt-8 font-bold text-blue-600">Details</legend>
+                <div className="grid w-full grid-cols-2 gap-4">
+                  <div className="pb-2 text-slate-500">
+                    <label>Invoice Date</label>
+                    <DatePicker
+                      selected={props.detailsInput.date}
+                      onChange={(date: Date) =>
+                        props.setDetailsInput((prevState) => {
+                          return {
+                            date,
+                            paymentTerms: prevState.paymentTerms
+                          };
+                        })
+                      }
+                      customInput={
+                        <input className='text-slate-900" w-full rounded-lg border border-slate-300 p-2' />
+                      }
+                    />
+                  </div>
+                  <p className="pb-2 text-slate-500">
+                    <label>Payment Terms</label>
+                    <select
+                      defaultValue={props.detailsInput.paymentTerms}
+                      onChange={(e) => {
+                        props.setDetailsInput((prevState) => {
+                          return {
+                            date: prevState.date,
+                            paymentTerms: e.target.value as PaymentTermsEnum
+                          };
+                        });
+                      }}
+                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900">
+                      {PaymentTermsEnumToOptions}
+                    </select>
+                  </p>
+                </div>
+                <InvoiceFormInputElement
+                  prevData={props.handleInput.projectDescriptionInputRef}
+                  inputRef={props.formRefs.projectDescriptionInputRef}
+                  placeholder="e.g. Graphic Design Service"
+                  label="Project Description"
+                />
+              </fieldset>
               <InvoiceFormFieldSetItems {...fieldSetItemProps} />
             </form>
             <button
               onClick={addNewItemClickHandler}
               type="button"
-              className="mt-10 w-full rounded-full bg-slate-200/50 py-5 font-semibold text-slate-500 transition hover:bg-slate-200">
+              className="mt-10 w-full rounded-full bg-slate-100 py-4 font-semibold text-slate-500 transition hover:bg-slate-200">
               + Add New Item
             </button>
+            <div className="flex justify-between pt-12">
+              <button className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500">
+                Discard
+              </button>
+              <div className="flex gap-3">
+                <button className="rounded-full bg-slate-600 py-4 px-7 font-semibold text-slate-200">
+                  Save as Draft
+                </button>
+                <button className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white">
+                  Save &amp; Send
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>

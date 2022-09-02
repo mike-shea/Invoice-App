@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
   const [itemCounter, setItemCounter] = useState(initialItemCounterState);
 
-  const { formRefs, handleInput, setHandleInput } = useFormRefs();
+  const { formRefs, handleInput, setHandleInput, detailsInput, setDetailsInput } = useFormRefs();
 
   const formProps = {
     formRefs,
@@ -33,7 +33,9 @@ const Home: NextPage = () => {
     setHandleInput,
     invoiceFormVisbility,
     itemCounter,
-    setItemCounter
+    setItemCounter,
+    detailsInput,
+    setDetailsInput
   };
 
   function mountForm() {

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .react-datepicker__header {
+    @apply bg-red-500 text-2xl !important;
+  }
+  h2 {
+    @apply text-xl;
+  }
+}

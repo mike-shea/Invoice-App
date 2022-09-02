@@ -1,19 +1,24 @@
 import { useRef, useState } from 'react';
-import { InputRefs } from './types';
+import { InputRefs, DetailsInputType } from './types';
+import { PaymentTermsEnum } from './types';
 
 const initialRefHandleState = {
   streetAddressInputRef: '',
   cityInputRef: '',
   postalCodeInputRef: '',
   countryInputRef: '',
-  companyInputRef: '',
   clientNameInputRef: '',
   clientEmailInputRef: '',
   clientStreetAddressInputRef: '',
   clientCityInputRef: '',
   clientPostalCodeInputRef: '',
   clientCountryInputRef: '',
-  clientCompanyInputRef: ''
+  projectDescriptionInputRef: ''
+};
+
+const intitalDetailsInput: DetailsInputType = {
+  date: new Date(),
+  paymentTerms: PaymentTermsEnum['Net 1 Day']
 };
 
 export default function useFormRefs() {
@@ -21,16 +26,16 @@ export default function useFormRefs() {
   const cityInputRef = useRef(null);
   const postalCodeInputRef = useRef(null);
   const countryInputRef = useRef(null);
-  const companyInputRef = useRef(null);
   const clientNameInputRef = useRef(null);
   const clientEmailInputRef = useRef(null);
   const clientStreetAddressInputRef = useRef(null);
   const clientCityInputRef = useRef(null);
   const clientPostalCodeInputRef = useRef(null);
   const clientCountryInputRef = useRef(null);
-  const clientCompanyInputRef = useRef(null);
+  const projectDescriptionInputRef = useRef(null);
 
   const [handleInput, setHandleInput] = useState<InputRefs>(initialRefHandleState);
+  const [detailsInput, setDetailsInput] = useState(intitalDetailsInput);
 
   return {
     formRefs: {
@@ -38,16 +43,17 @@ export default function useFormRefs() {
       cityInputRef,
       postalCodeInputRef,
       countryInputRef,
-      companyInputRef,
       clientNameInputRef,
       clientEmailInputRef,
       clientStreetAddressInputRef,
       clientCityInputRef,
       clientPostalCodeInputRef,
       clientCountryInputRef,
-      clientCompanyInputRef
+      projectDescriptionInputRef
     },
     handleInput,
-    setHandleInput
+    setHandleInput,
+    detailsInput,
+    setDetailsInput
   };
 }
