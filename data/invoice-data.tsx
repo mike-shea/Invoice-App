@@ -1,3 +1,6 @@
+import { PaymentTermsEnum } from '../components/types';
+import type { ItemCounterType } from '../components/types';
+
 interface addressDetails {
   street: string;
   city: string;
@@ -5,24 +8,18 @@ interface addressDetails {
   country: string;
 }
 
-interface InvoiceItem {
-  name: string;
-  quantity: number;
-  price: number;
-}
-
 interface InvoiceDetails {
   id: string;
   createdAt: string;
   paymentDue: string;
   description: string;
-  paymentTerms: number;
+  paymentTerms: PaymentTermsEnum;
   sender: addressDetails;
   client: {
     name: string;
     email: string;
   } & addressDetails;
-  items: InvoiceItem[];
+  items: ItemCounterType[];
   status: 'paid' | 'pending' | 'draft';
 }
 
@@ -33,7 +30,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-08-18',
     paymentDue: '2021-08-19',
     description: 'Re-branding',
-    paymentTerms: 1,
+    paymentTerms: PaymentTermsEnum['Net 1 Day'],
     sender: {
       street: '19 Union Terrace',
       city: 'London',
@@ -50,9 +47,10 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'rt3080-1',
         name: 'Brand Guidelines',
-        quantity: 1,
-        price: 180090
+        quantity: '1',
+        price: '180090'
       }
     ]
   },
@@ -62,7 +60,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-08-21',
     paymentDue: '2021-09-20',
     description: 'Graphic Design',
-    paymentTerms: 30,
+    paymentTerms: PaymentTermsEnum['Net 30 Days'],
     sender: {
       street: '19 Union Terrace',
       city: 'London',
@@ -79,23 +77,25 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'xm9141-1',
         name: 'Banner Design',
-        quantity: 1,
-        price: 15600
+        quantity: '1',
+        price: '15600'
       },
       {
+        id: 'xm9141-2',
         name: 'Email Design',
-        quantity: 2,
-        price: 20000
+        quantity: '2',
+        price: '20000'
       }
     ]
   },
   {
-    id: 'RG0314',
+    id: 'rg0314',
     createdAt: '2021-09-24',
     paymentDue: '2021-10-01',
     description: 'Website Redesign',
-    paymentTerms: 7,
+    paymentTerms: PaymentTermsEnum['Net 7 Days'],
     status: 'paid',
     sender: {
       street: '19 Union Terrace',
@@ -113,9 +113,10 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'rg0314-1',
         name: 'Website Redesign',
-        quantity: 1,
-        price: 140023
+        quantity: '1',
+        price: '140023'
       }
     ]
   },
@@ -124,7 +125,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-10-7',
     paymentDue: '2021-10-14',
     description: 'Re-branding',
-    paymentTerms: 7,
+    paymentTerms: PaymentTermsEnum['Net 14 Days'],
     status: 'pending',
     sender: {
       street: '19 Union Terrace',
@@ -142,14 +143,16 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'aa1449-1',
         name: 'New Logo',
-        quantity: 1,
-        price: 153233
+        quantity: '1',
+        price: '153233'
       },
       {
+        id: 'aa1449-2',
         name: 'Brand Guidelines',
-        quantity: 1,
-        price: 250000
+        quantity: '1',
+        price: '250000'
       }
     ]
   },
@@ -158,7 +161,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-10-01',
     paymentDue: '2021-10-31',
     description: 'Landing Page Design',
-    paymentTerms: 30,
+    paymentTerms: PaymentTermsEnum['Net 14 Days'],
     status: 'pending',
     sender: {
       street: '19 Union Terrace',
@@ -176,9 +179,10 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'cd9141-1',
         name: 'Web Design',
-        quantity: 1,
-        price: 61591
+        quantity: '1',
+        price: '61591'
       }
     ]
   },
@@ -187,7 +191,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-11-05',
     paymentDue: '2021-11-12',
     description: 'Logo Re-design',
-    paymentTerms: 7,
+    paymentTerms: PaymentTermsEnum['Net 7 Days'],
     status: 'draft',
     sender: {
       street: '19 Union Terrace',
@@ -205,9 +209,10 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'fv2353-1',
         name: 'Logo Re-design',
-        quantity: 1,
-        price: 310203
+        quantity: '1',
+        price: '310203'
       }
     ]
   },
@@ -216,7 +221,7 @@ const invoiceData: InvoiceDetails[] = [
     createdAt: '2021-10-01',
     paymentDue: '2021-10-31',
     description: 'Landing Page Design',
-    paymentTerms: 30,
+    paymentTerms: PaymentTermsEnum['Net 30 Days'],
     status: 'pending',
     sender: {
       street: '19 Union Terrace',
@@ -234,9 +239,10 @@ const invoiceData: InvoiceDetails[] = [
     },
     items: [
       {
+        id: 'ty9141-1',
         name: 'Web Design',
-        quantity: 1,
-        price: 61591
+        quantity: '1',
+        price: '61591'
       }
     ]
   }
