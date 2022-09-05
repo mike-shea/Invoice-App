@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { InputRefs, DetailsInputType } from './types';
+import { InputRefs, DetailsInputType, RefObjectType } from './types';
 import { PaymentTermsEnum } from './types';
 
 const initialRefHandleState = {
@@ -22,17 +22,17 @@ const intitalDetailsInput: DetailsInputType = {
 };
 
 export default function useFormRefs() {
-  const streetAddressInputRef = useRef(null);
-  const cityInputRef = useRef(null);
-  const postalCodeInputRef = useRef(null);
-  const countryInputRef = useRef(null);
-  const clientNameInputRef = useRef(null);
-  const clientEmailInputRef = useRef(null);
-  const clientStreetAddressInputRef = useRef(null);
-  const clientCityInputRef = useRef(null);
-  const clientPostalCodeInputRef = useRef(null);
-  const clientCountryInputRef = useRef(null);
-  const projectDescriptionInputRef = useRef(null);
+  const streetAddressInputRef = useRef(null) as RefObjectType;
+  const cityInputRef = useRef(null) as RefObjectType;
+  const postalCodeInputRef = useRef(null) as RefObjectType;
+  const countryInputRef = useRef(null) as RefObjectType;
+  const clientNameInputRef = useRef(null) as RefObjectType;
+  const clientEmailInputRef = useRef(null) as RefObjectType;
+  const clientStreetAddressInputRef = useRef(null) as RefObjectType;
+  const clientCityInputRef = useRef(null) as RefObjectType;
+  const clientPostalCodeInputRef = useRef(null) as RefObjectType;
+  const clientCountryInputRef = useRef(null) as RefObjectType;
+  const projectDescriptionInputRef = useRef(null) as RefObjectType;
 
   const [handleInput, setHandleInput] = useState<InputRefs>(initialRefHandleState);
   const [detailsInput, setDetailsInput] = useState(intitalDetailsInput);
