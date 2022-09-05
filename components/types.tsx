@@ -44,5 +44,19 @@ interface ItemCounterType {
   quantity: string;
   price: string;
 }
+
+interface FilteredStatusType {
+  draft: boolean;
+  pending: boolean;
+  paid: boolean;
+}
+
 export { PaymentTermsEnum };
-export type { InputRefs, formRefsType, ItemCounterType, RefObjectType, DetailsInputType };
+export type {
+  InputRefs,
+  FilteredStatusType,
+  formRefsType,
+  ItemCounterType,
+  RefObjectType,
+  DetailsInputType
+};
