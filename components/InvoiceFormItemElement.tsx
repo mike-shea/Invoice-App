@@ -29,45 +29,39 @@ export default function InvoiceFormItemElement(props: {
     return (parseInt(itemPriceInput) || 0) * (parseInt(itemQuantityInput) || 0);
   }
   useEffect(() => {
-    return () => {
-      if (parseInt(itemQuantityInput) > 0) {
-        props.setItemCounter((prevState) => {
-          const newState = structuredClone(prevState);
-          if (newState[currentItemIndex]) {
-            newState[currentItemIndex].quantity = itemQuantityInput;
-          }
-          return newState;
-        });
-      }
-    };
+    if (parseInt(itemQuantityInput) > 0) {
+      props.setItemCounter((prevState) => {
+        const newState = structuredClone(prevState);
+        if (newState[currentItemIndex]) {
+          newState[currentItemIndex].quantity = itemQuantityInput;
+        }
+        return newState;
+      });
+    }
   }, [itemQuantityInput]);
 
   useEffect(() => {
-    return () => {
-      if (itemNameInput.length > 0) {
-        props.setItemCounter((prevState) => {
-          const newState = [...prevState];
-          if (newState[currentItemIndex]) {
-            newState[currentItemIndex].name = itemNameInput;
-          }
-          return newState;
-        });
-      }
-    };
+    if (itemNameInput.length > 0) {
+      props.setItemCounter((prevState) => {
+        const newState = [...prevState];
+        if (newState[currentItemIndex]) {
+          newState[currentItemIndex].name = itemNameInput;
+        }
+        return newState;
+      });
+    }
   }, [itemNameInput]);
 
   useEffect(() => {
-    return () => {
-      if (parseInt(itemPriceInput) > 0) {
-        props.setItemCounter((prevState) => {
-          const newState = [...prevState];
-          if (newState[currentItemIndex]) {
-            newState[currentItemIndex].price = itemPriceInput;
-          }
-          return newState;
-        });
-      }
-    };
+    if (parseInt(itemPriceInput) > 0) {
+      props.setItemCounter((prevState) => {
+        const newState = [...prevState];
+        if (newState[currentItemIndex]) {
+          newState[currentItemIndex].price = itemPriceInput;
+        }
+        return newState;
+      });
+    }
   }, [itemPriceInput]);
 
   return (

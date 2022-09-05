@@ -15,7 +15,9 @@ export default function InvoiceForm(props: {
   invoiceFormVisbility: boolean;
   itemCounter: ItemCounterType[];
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
+  clearForm: () => void;
   unmountForm: () => void;
+  saveChanges: (options?: { draft: boolean }) => void;
   formRefs: formRefsType;
 }) {
   const PaymentTermsEnumToOptions = (
@@ -133,14 +135,20 @@ export default function InvoiceForm(props: {
               + Add New Item
             </button>
             <div className="flex justify-between pt-12">
-              <button className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500">
+              <button
+                onClick={props.clearForm}
+                className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500">
                 Discard
               </button>
               <div className="flex gap-3">
-                <button className="rounded-full bg-slate-600 py-4 px-7 font-semibold text-slate-200">
+                <button
+                  onClick={() => props.saveChanges({ draft: true })}
+                  className="rounded-full bg-slate-600 py-4 px-7 font-semibold text-slate-200">
                   Save as Draft
                 </button>
-                <button className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white">
+                <button
+                  onClick={() => props.saveChanges()}
+                  className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white">
                   Save &amp; Send
                 </button>
               </div>

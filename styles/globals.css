@@ -1,12 +1,41 @@
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
+@tailwind components;
 
-@layer components {
-  .react-datepicker__header {
-    @apply bg-red-500 text-2xl !important;
-  }
-  h2 {
-    @apply text-xl;
-  }
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+/* body::before {
+  content: '';
+  left: 0;
+  top: 0;
+  position: absolute;
+  background: url('../src/img/grain.png');
+  max-height: 100%;
+  width: 100%;
+  opacity: 7%;
+  pointer-events: none;
+} */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
 }

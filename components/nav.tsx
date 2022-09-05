@@ -7,21 +7,24 @@ import Avatar from '../public/crow-1.svg';
 
 export default function Nav() {
   return (
-    <nav className="fixed left-0 top-0 flex h-screen w-24 flex-col items-center justify-between overflow-hidden rounded-r-3xl bg-slate-800 pb-8">
-      <div className="relative h-24 w-full overflow-hidden rounded-br-3xl bg-blue-500">
-        <div className="absolute bottom-0 h-1/2 w-full rounded-tl-3xl bg-white/10"></div>
-        <div className="p-5">
-          <LogoSvg2 classGroup="w-full h-full" className="fill-white" />
+    <>
+      <div className="lg:h-min-screen h-24 w-full bg-slate-100 lg:w-24"></div>
+      <nav className="fixed top-0 left-0 flex w-full justify-between bg-slate-800 pr-8 lg:min-h-screen lg:w-24 lg:flex-col lg:rounded-r-3xl lg:pb-8">
+        <div className="relative w-24 w-full overflow-hidden rounded-r-3xl bg-blue-500 lg:rounded-br-3xl">
+          <div className="absolute bottom-0 h-1/2 w-full rounded-tl-3xl bg-white/10"></div>
+          <div id="logo-container" className="p-5">
+            <LogoSvg2 classGroup="w-full h-full" className="fill-white" />
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col gap-8">
-        <div className="aspect-square w-12 overflow-hidden rounded-full bg-slate-900/50 p-2">
-          <MoonSvg classGroup="w-full h-full" className="fill-slate-500" />
+        <div className="flex items-center gap-8 lg:flex-col">
+          <div className="aspect-square w-12 overflow-hidden rounded-full bg-slate-900/50 p-2">
+            <MoonSvg classGroup="w-full h-full" className="fill-slate-500" />
+          </div>
+          <div className="aspect-square w-12 overflow-hidden rounded-full bg-blue-500 p-2">
+            <Image layout="responsive" alt="logo" src={Avatar} />
+          </div>
         </div>
-        <div className="aspect-square w-12 overflow-hidden rounded-full bg-blue-500 p-2">
-          <Image layout="responsive" alt="logo" src={Avatar} />
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
