@@ -5,9 +5,10 @@ export default function InvoiceFormInputElement(props: {
   label: string;
   prevData?: string | null;
   placeholder?: string | null;
+  spanFull?: boolean;
 }) {
   return (
-    <p className="pb-2 text-slate-500">
+    <div className={`${props.spanFull && 'col-span-2'} flex w-full flex-col pb-2 text-slate-500`}>
       <label>{props.label}</label>
       <input
         ref={props.inputRef}
@@ -16,6 +17,6 @@ export default function InvoiceFormInputElement(props: {
         placeholder={props.placeholder ?? ''}
         defaultValue={props.prevData ?? ''}
       />
-    </p>
+    </div>
   );
 }

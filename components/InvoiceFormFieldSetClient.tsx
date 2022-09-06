@@ -30,7 +30,7 @@ export default function InvoiceFormFieldSetClient(props: {
         label="Street Address"
       />
 
-      <div className="grid w-full grid-cols-3 gap-4">
+      <div className="grid w-full grid-cols-2 gap-x-4 lg:grid-cols-3">
         <InvoiceFormInputElement
           prevData={props.handleInput.clientCityInputRef}
           inputRef={props.clientCityInputRef}
@@ -42,6 +42,7 @@ export default function InvoiceFormFieldSetClient(props: {
           label="Postal Code"
         />
         <InvoiceFormInputElement
+          spanFull={true}
           prevData={props.handleInput.clientCountryInputRef}
           inputRef={props.clientCountryInputRef}
           label="Country"

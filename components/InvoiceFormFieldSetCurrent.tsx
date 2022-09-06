@@ -17,7 +17,7 @@ export default function InvoiceFormFieldSetCurrent(props: {
         inputRef={props.streetAddressInputRef}
         label="Street Address"
       />
-      <div className="grid w-full grid-cols-3 gap-4">
+      <div className="grid w-full grid-cols-2 gap-x-4 lg:grid-cols-3">
         <InvoiceFormInputElement
           prevData={props.handleInput.cityInputRef}
           inputRef={props.cityInputRef}
@@ -29,6 +29,7 @@ export default function InvoiceFormFieldSetCurrent(props: {
           label="Postal Code"
         />
         <InvoiceFormInputElement
+          spanFull={true}
           prevData={props.handleInput.countryInputRef}
           inputRef={props.countryInputRef}
           label="Country"

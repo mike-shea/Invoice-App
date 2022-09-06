@@ -7,6 +7,7 @@ import InvoiceFormFieldSetClient from './InvoiceFormFieldSetClient';
 import InvoiceFormFieldSetItems from './InvoiceFormFieldSetItems';
 import DatePicker from 'react-datepicker';
 import InvoiceFormInputElement from './InvoiceFormInputElement';
+import GoBackHeader from './GoBackHeader';
 
 export default function InvoiceForm(props: {
   detailsInput: DetailsInputType;
@@ -63,7 +64,7 @@ export default function InvoiceForm(props: {
   }
 
   return (
-    <>
+    <div className="relative flex">
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -75,10 +76,11 @@ export default function InvoiceForm(props: {
         initial={{ x: -500 }}
         animate={{ x: 0 }}
         exit={{ x: -725 }}
-        className="fixed h-screen w-3/5 overflow-hidden rounded-2xl bg-white pl-32">
-        <div className="flex h-full items-start justify-center overflow-y-scroll scroll-smooth pr-12">
-          <div className="max-w-lg py-12 ">
-            <h2 className="pb-12 text-3xl font-bold">New Invoice</h2>
+        className="absolute top-0 z-20 h-screen w-full overflow-hidden bg-white md:w-3/5 md:pl-32 lg:rounded-2xl">
+        <div className="flex h-full items-start justify-center overflow-y-scroll scroll-smooth md:pr-12">
+          <div className="max-w-lg px-8 py-8 lg:py-12">
+            <GoBackHeader unmountForm={props.unmountForm} />
+            <h2 className="pb-4 text-3xl font-bold text-slate-700 lg:pb-12">New Invoice</h2>
             <form>
               <InvoiceFormFieldSetCurrent {...fieldSetCurrentProps} />
               <InvoiceFormFieldSetClient {...fieldSetClientProps} />
@@ -156,6 +158,6 @@ export default function InvoiceForm(props: {
           </div>
         </div>
       </motion.div>
-    </>
+    </div>
   );
 }

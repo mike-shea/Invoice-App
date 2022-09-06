@@ -65,8 +65,8 @@ export default function InvoiceFormItemElement(props: {
   }, [itemPriceInput]);
 
   return (
-    <div className="grid w-full grid-cols-7 gap-4">
-      <p className="col-span-3 pb-2 text-slate-500">
+    <div className="grid w-full grid-cols-7 gap-x-4">
+      <p className="col-span-7 pb-2 text-slate-500 lg:col-span-3">
         <label>Name</label>
         <input
           onChange={(e) => setItemNameInput(e.target.value)}
@@ -75,7 +75,7 @@ export default function InvoiceFormItemElement(props: {
           value={itemNameInput}
         />
       </p>
-      <p className="pb-2 text-slate-500">
+      <p className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
         <label>Quantity</label>
         <input
           onChange={(e) => setItemQuantityInput(e.target.value)}
@@ -84,7 +84,7 @@ export default function InvoiceFormItemElement(props: {
           value={itemQuantityInput}
         />
       </p>
-      <p className="pb-2 text-slate-500">
+      <p className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
         <label>Price</label>
         <input
           onChange={(e) => setItemPriceInput(e.target.value)}
@@ -93,7 +93,7 @@ export default function InvoiceFormItemElement(props: {
           value={itemPriceInput}
         />
       </p>
-      <div className="pb-2 text-slate-500">
+      <div className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
         <label>Total</label>
         <p className="w-full p-2 text-slate-900">{totalAmount()}</p>
       </div>

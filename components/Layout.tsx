@@ -32,10 +32,10 @@ export default function Layout(props: {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col lg:flex-row">
+        <Nav />
         <AnimatePresence>
           {props.formProps.invoiceFormVisbility && <InvoiceForm {...props.formProps} />}
         </AnimatePresence>
-        <Nav />
 
         <div id="modal-layouts"></div>
         <main
