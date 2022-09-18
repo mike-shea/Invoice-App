@@ -149,7 +149,7 @@ export default function InvoiceForm(props: {
                   </p>
                 </div>
                 <InvoiceFormInputElement
-                  prevData={props.handleInput.projectDescriptionInputRef}
+                  prevData={props.handleInput.projectDescriptionInputValue}
                   inputRef={props.formRefs.projectDescriptionInputRef}
                   placeholder="e.g. Graphic Design Service"
                   label="Project Description"

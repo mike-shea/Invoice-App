@@ -10,17 +10,17 @@ interface DetailsInputType {
 }
 
 interface InputRefs {
-  streetAddressInputRef: string | null;
-  cityInputRef: string | null;
-  postalCodeInputRef: string | null;
-  countryInputRef: string | null;
-  clientNameInputRef: string | null;
-  clientEmailInputRef: string | null;
-  clientStreetAddressInputRef: string | null;
-  clientCityInputRef: string | null;
-  clientPostalCodeInputRef: string | null;
-  clientCountryInputRef: string | null;
-  projectDescriptionInputRef: string | null;
+  streetAddressInputValue: string | null;
+  cityInputValue: string | null;
+  postalCodeInputValue: string | null;
+  countryInputValue: string | null;
+  clientNameInputValue: string | null;
+  clientEmailInputValue: string | null;
+  clientStreetAddressInputValue: string | null;
+  clientCityInputValue: string | null;
+  clientPostalCodeInputValue: string | null;
+  clientCountryInputValue: string | null;
+  projectDescriptionInputValue: string | null;
 }
 type RefObjectType = React.MutableRefObject<null> | React.MutableRefObject<HTMLInputElement>;
 

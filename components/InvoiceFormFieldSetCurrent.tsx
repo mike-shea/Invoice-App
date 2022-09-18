@@ -13,24 +13,24 @@ export default function InvoiceFormFieldSetCurrent(props: {
     <fieldset>
       <legend className="pb-2 font-bold text-blue-600">Bill From</legend>
       <InvoiceFormInputElement
-        prevData={props.handleInput.streetAddressInputRef}
+        prevData={props.handleInput.streetAddressInputValue}
         inputRef={props.streetAddressInputRef}
         label="Street Address"
       />
       <div className="grid w-full grid-cols-2 gap-x-4 lg:grid-cols-3">
         <InvoiceFormInputElement
-          prevData={props.handleInput.cityInputRef}
+          prevData={props.handleInput.cityInputValue}
           inputRef={props.cityInputRef}
           label="City"
         />
         <InvoiceFormInputElement
-          prevData={props.handleInput.postalCodeInputRef}
+          prevData={props.handleInput.postalCodeInputValue}
           inputRef={props.postalCodeInputRef}
           label="Postal Code"
         />
         <InvoiceFormInputElement
           spanFull={true}
-          prevData={props.handleInput.countryInputRef}
+          prevData={props.handleInput.countryInputValue}
           inputRef={props.countryInputRef}
           label="Country"
         />

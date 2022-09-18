@@ -3,17 +3,17 @@ import { InputRefs, DetailsInputType, RefObjectType } from '../components/types'
 import { PaymentTermsEnum } from '../components/types';
 
 const initialRefHandleState = {
-  streetAddressInputRef: '',
-  cityInputRef: '',
-  postalCodeInputRef: '',
-  countryInputRef: '',
-  clientNameInputRef: '',
-  clientEmailInputRef: '',
-  clientStreetAddressInputRef: '',
-  clientCityInputRef: '',
-  clientPostalCodeInputRef: '',
-  clientCountryInputRef: '',
-  projectDescriptionInputRef: ''
+  streetAddressInputValue: '',
+  cityInputValue: '',
+  postalCodeInputValue: '',
+  countryInputValue: '',
+  clientNameInputValue: '',
+  clientEmailInputValue: '',
+  clientStreetAddressInputValue: '',
+  clientCityInputValue: '',
+  clientPostalCodeInputValue: '',
+  clientCountryInputValue: '',
+  projectDescriptionInputValue: ''
 };
 
 const intitalDetailsInput: DetailsInputType = {

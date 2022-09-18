@@ -63,24 +63,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   function editForm(id: string) {
-    const invoiceItem = (invoiceDataSWR as InvoiceDetails[]).find((invoice) => invoice.id === id);
+    const invoiceItem = invoiceDataSWR?.find((invoice) => invoice.id === id);
+    console.log('editForm invoice item:', invoiceItem);
     setEditFormState(true);
     setHandleInput({
-      streetAddressInputRef: invoiceItem?.sender.street || '',
-      cityInputRef: invoiceItem?.sender.city || '',
-      postalCodeInputRef: invoiceItem?.sender.postalCode || '',
-      countryInputRef: invoiceItem?.sender.country || '',
-      clientNameInputRef: invoiceItem?.client.name || '',
-      clientEmailInputRef: invoiceItem?.client.email || '',
-      clientStreetAddressInputRef: invoiceItem?.client.street || '',
-      clientCityInputRef: invoiceItem?.client.city || '',
-      clientPostalCodeInputRef: invoiceItem?.client.postalCode || '',
-      clientCountryInputRef: invoiceItem?.client.country || '',
-      projectDescriptionInputRef: invoiceItem?.description || ''
+      streetAddressInputValue: invoiceItem?.sender.street || '',
+      cityInputValue: invoiceItem?.sender.city || '',
+      postalCodeInputValue: invoiceItem?.sender.postalCode || '',
+      countryInputValue: invoiceItem?.sender.country || '',
+      clientNameInputValue: invoiceItem?.client.name || '',
+      clientEmailInputValue: invoiceItem?.client.email || '',
+      clientStreetAddressInputValue: invoiceItem?.client.street || '',
+      clientCityInputValue: invoiceItem?.client.city || '',
+      clientPostalCodeInputValue: invoiceItem?.client.postalCode || '',
+      clientCountryInputValue: invoiceItem?.client.country || '',
+      projectDescriptionInputValue: invoiceItem?.description || ''
     });
 
     setDetailsInput({
-      date: new Date(invoiceItem?.createdAt || new Date()),
+      date: new Date(invoiceItem?.paymentDue || new Date()),
       paymentTerms: PaymentTermsEnum[`${invoiceItem?.paymentTerms || 'Net 1 Day'}`]
     });
     setItemCounter(invoiceItem?.items || []);
@@ -108,14 +109,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       id: undefined
     }
   ) {
-    setHandleInput((prevState) => {
-      const newState = structuredClone(prevState);
-      for (const inputRef in newState) {
-        const refData: string | undefined = (formRefs as formRefsType)[inputRef as keyof InputRefs]
-          ?.current?.value;
-        newState[inputRef as keyof InputRefs] = refData || '';
-      }
-      return newState;
+    setHandleInput({
+      streetAddressInputValue: formRefs.streetAddressInputRef.current?.value || '',
+      cityInputValue: formRefs.cityInputRef.current?.value || '',
+      postalCodeInputValue: formRefs.postalCodeInputRef.current?.value || '',
+      countryInputValue: formRefs.countryInputRef.current?.value || '',
+      clientNameInputValue: formRefs.clientNameInputRef.current?.value || '',
+      clientEmailInputValue: formRefs.clientEmailInputRef.current?.value || '',
+      clientStreetAddressInputValue: formRefs.clientStreetAddressInputRef.current?.value || '',
+      clientCityInputValue: formRefs.clientCityInputRef.current?.value || '',
+      clientPostalCodeInputValue: formRefs.clientPostalCodeInputRef.current?.value || '',
+      clientCountryInputValue: formRefs.clientCountryInputRef.current?.value || '',
+      projectDescriptionInputValue: formRefs.projectDescriptionInputRef.current?.value || ''
     });
     setInvoiceFormVisiblity(false);
     if (config.navigateHome || !editFormState) {
@@ -181,7 +186,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (invoiceItem && Array.isArray(invoiceDataSWR)) {
       const newState = structuredClone(invoiceDataSWR);
       const invoiceItemIndex = newState.findIndex((invoice) => invoice.id === invoiceItem.id);
-      newState.splice(invoiceItemIndex, 1, invoiceItem);
+      newState.splice(invoiceItemIndex, 1, newInvoice);
+      console.log(newInvoice);
       mutate(newState, { revalidate: false });
     }
     clearForm();
