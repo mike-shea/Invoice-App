@@ -54,6 +54,7 @@ export default function InvoiceId(props: {
   deleteInvoice: (invoiceId: string) => void;
   updateStatus: (invoiceId: string, statusUpdate: 'paid' | 'draft' | 'pending') => void;
   clearForm: () => void;
+  editForm: (id: string) => void;
   mountForm: () => void;
   unmountForm: () => void;
   saveChanges: (options?: { draft: boolean }) => void;
@@ -63,9 +64,6 @@ export default function InvoiceId(props: {
   const invoiceIdParam = router.query.invoiceID;
   const invoiceItem = props.invoiceDataSWR?.find((invoice) => invoice.id === invoiceIdParam);
 
-  function goBack() {
-    router.push('/');
-  }
   if (invoiceItem?.status === 'paid') {
     statusConfig.bg = 'bg-green-500/10';
     statusConfig.circleColor = 'bg-green-500';
@@ -114,7 +112,7 @@ export default function InvoiceId(props: {
           </div>
           <div className="hidden gap-3 lg:flex">
             <button
-              onClick={props.clearForm}
+              onClick={() => props.editForm(invoiceItem?.id || '')}
               className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70">
               Edit
             </button>
@@ -211,7 +209,7 @@ export default function InvoiceId(props: {
       <div className="flex w-full grow items-end pt-8 lg:hidden">
         <div className="flex w-full justify-center gap-3 bg-white py-4 px-4 text-sm">
           <button
-            onClick={props.clearForm}
+            onClick={props.mountForm}
             className="rounded-full bg-slate-100 py-3 px-5 font-semibold text-slate-500/70">
             Edit
           </button>

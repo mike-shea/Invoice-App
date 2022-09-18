@@ -20,8 +20,9 @@ export default function Layout(props: {
     clearForm: () => void;
     mountForm: () => void;
     unmountForm: () => void;
-    saveChanges: (options?: { draft: boolean }) => void;
+    saveChanges: (options?: { draft?: boolean; id?: string | undefined }) => void;
     formRefs: formRefsType;
+    editFormState: boolean;
   };
 }) {
   return (
@@ -34,7 +35,9 @@ export default function Layout(props: {
       <div className="flex flex-col lg:flex-row">
         <Nav />
         <AnimatePresence>
-          {props.formProps.invoiceFormVisbility && <InvoiceForm {...props.formProps} />}
+          {props.formProps.invoiceFormVisbility && (
+            <InvoiceForm {...props.formProps} editFormState={props.formProps.editFormState} />
+          )}
         </AnimatePresence>
 
         <div id="modal-layouts"></div>

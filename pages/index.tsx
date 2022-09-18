@@ -26,7 +26,11 @@ export default function Home(props: {
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
   clearForm: () => void;
   mountForm: () => void;
-  unmountForm: () => void;
+  unmountForm: (config: {
+    navigateHome?: boolean;
+    navigateId?: boolean;
+    id?: string | undefined;
+  }) => void;
   saveChanges: (options?: { draft: boolean }) => void;
   formRefs: formRefsType;
 }) {
@@ -45,6 +49,7 @@ export default function Home(props: {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}>
         <Header
+          clearForm={props.clearForm}
           filterByStatus={props.filterByStatus}
           setFilterByStatus={props.setFilterByStatus}
           mountForm={props.mountForm}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { PaymentTermsEnum } from './types';
 import type { InputRefs, ItemCounterType, formRefsType, DetailsInputType } from './types';
@@ -10,6 +10,8 @@ import InvoiceFormInputElement from './InvoiceFormInputElement';
 import GoBackHeader from './GoBackHeader';
 import useMediaQuery from '../hooks/useMediaQuery';
 
+import { useRouter } from 'next/router';
+
 export default function InvoiceForm(props: {
   detailsInput: DetailsInputType;
   setDetailsInput: React.Dispatch<React.SetStateAction<DetailsInputType>>;
@@ -18,9 +20,10 @@ export default function InvoiceForm(props: {
   itemCounter: ItemCounterType[];
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
   clearForm: () => void;
-  unmountForm: () => void;
-  saveChanges: (options?: { draft: boolean }) => void;
+  unmountForm: (config: { navigateHome?: boolean; id?: string | undefined }) => void;
+  saveChanges: (options?: { draft?: boolean; id?: string | undefined }) => void;
   formRefs: formRefsType;
+  editFormState: boolean;
 }) {
   const minWidthLg = useMediaQuery('(min-width: 1024px)');
   const PaymentTermsEnumToOptions = (
@@ -64,6 +67,10 @@ export default function InvoiceForm(props: {
       return newState;
     });
   }
+
+  const router = useRouter();
+  const invoiceIdParam = router.query.invoiceID;
+
   const windowSpeed = document.body.clientHeight / window.innerHeight;
 
   const formVariants = minWidthLg
@@ -76,8 +83,8 @@ export default function InvoiceForm(props: {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { ease: 'easeIn' }, pointerEvents: 'none' }}
-        onClick={props.unmountForm}
-        className="fixed min-h-screen w-full bg-slate-800/50"></motion.section>
+        onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
+        className="fixed z-20 min-h-screen w-full bg-slate-800/50"></motion.section>
 
       <motion.div
         variants={formVariants}
@@ -87,8 +94,20 @@ export default function InvoiceForm(props: {
         className="absolute top-24 z-40 flex min-h-screen w-full overflow-hidden bg-white lg:absolute lg:left-16 lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:rounded-r-2xl lg:pl-8">
         <div className="flex h-full grow items-start justify-center scroll-smooth lg:overflow-y-scroll lg:px-12">
           <div className="max-w-lg px-8 py-8 lg:py-12">
-            <GoBackHeader unmountForm={props.unmountForm} />
-            <h2 className="pb-4 text-3xl font-bold text-slate-700 lg:pb-12">New Invoice</h2>
+            <GoBackHeader
+              unmountForm={props.unmountForm}
+              invoiceId={invoiceIdParam?.toString() || null}
+            />
+            <h2 className="pb-4 text-3xl font-semibold text-slate-700 lg:pb-12">
+              {props.editFormState && invoiceIdParam ? (
+                <>
+                  Edit <span className="text-slate-400">#</span>
+                  {invoiceIdParam.toString().toUpperCase()}
+                </>
+              ) : (
+                'New Invoice'
+              )}
+            </h2>
             <form>
               <InvoiceFormFieldSetCurrent {...fieldSetCurrentProps} />
               <InvoiceFormFieldSetClient {...fieldSetClientProps} />
@@ -145,23 +164,40 @@ export default function InvoiceForm(props: {
               + Add New Item
             </button>
             <div className="flex justify-between pt-12 text-sm">
-              <button
-                onClick={props.unmountForm}
-                className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
-                Discard
-              </button>
-              <div className="flex gap-1 lg:gap-3">
-                <button
-                  onClick={() => props.saveChanges({ draft: true })}
-                  className="rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
-                  Save <span className="hidden lg:block"> as </span> Draft
-                </button>
-                <button
-                  onClick={() => props.saveChanges()}
-                  className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
-                  Save <span className="hidden lg:block">&amp; Send</span>
-                </button>
-              </div>
+              {props.editFormState ? (
+                <div className="flex gap-1 lg:gap-3">
+                  <button
+                    onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
+                    className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => props.saveChanges({ id: invoiceIdParam?.toString() })}
+                    className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                    Save <span className="hidden lg:block">Changes</span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => props.unmountForm({ navigateHome: true })}
+                    className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    Discard
+                  </button>
+                  <div className="flex gap-1 lg:gap-3">
+                    <button
+                      onClick={() => props.saveChanges({ draft: true })}
+                      className="rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
+                      Save <span className="hidden lg:block"> as </span> Draft
+                    </button>
+                    <button
+                      onClick={() => props.saveChanges()}
+                      className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                      Save <span className="hidden lg:block">&amp; Send</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

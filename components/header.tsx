@@ -9,9 +9,15 @@ export default function Header(props: {
   setFilterByStatus: React.Dispatch<React.SetStateAction<FilteredStatusType>>;
   invoiceItemLength: number;
   mountForm: () => void;
+  clearForm: () => void;
 }) {
   const { componentVisibleRef, isComponentVisible, setIsComponentVisible } =
     useHandleClickOutside(false);
+
+  function newInvoice() {
+    props.mountForm();
+    props.clearForm();
+  }
 
   return (
     <header className="flex w-full flex-row items-center justify-between">
@@ -44,7 +50,7 @@ export default function Header(props: {
         </div>
 
         <button
-          onClick={() => props.mountForm()}
+          onClick={newInvoice}
           className="flex items-center gap-2 rounded-full bg-blue-600 py-2 pl-2 pr-5 font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800 lg:gap-4">
           <div className="rounded-full bg-white p-1">
             <PlusSvg className="fill-blue-500" />

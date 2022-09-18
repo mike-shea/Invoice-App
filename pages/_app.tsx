@@ -1,14 +1,14 @@
-import '../styles/globals.css';
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import type { AppProps } from 'next/app';
-import '../components/react-datepicker2.css';
-import Layout from '../components/Layout';
-import useSwr from 'swr';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import useSwr, { KeyedMutator } from 'swr';
 import { newIdTag } from '../components/helpers';
+import Layout from '../components/Layout';
+import '../components/react-datepicker2.css';
+import { FilteredStatusType, formRefsType, InputRefs, PaymentTermsEnum } from '../components/types';
 import { invoiceDataJson, InvoiceDetails } from '../data/invoice-data';
 import useFormRefs from '../hooks/useFormRefs';
-import { FilteredStatusType, formRefsType, InputRefs, PaymentTermsEnum } from '../components/types';
+import '../styles/globals.css';
 
 const initialItemCounterState = [
   { id: `itemLog-${Math.floor(Math.random() * 10000)}`, name: '', quantity: '0', price: '0' }
@@ -17,6 +17,7 @@ const initialItemCounterState = [
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
+  const [editFormState, setEditFormState] = useState(false);
   const [itemCounter, setItemCounter] = useState(initialItemCounterState);
   const [filterByStatus, setFilterByStatus] = useState<FilteredStatusType>({
     draft: true,
@@ -25,11 +26,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
   const { formRefs, handleInput, setHandleInput, detailsInput, setDetailsInput } = useFormRefs();
 
-  const { data: invoiceDataSWR, mutate } = useSwr(invoiceDataJson, (args) => JSON.parse(args), {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  });
+  const {
+    data: invoiceDataSWR,
+    mutate
+  }: { data?: InvoiceDetails[]; mutate: KeyedMutator<unknown> } = useSwr(
+    invoiceDataJson,
+    (args) => JSON.parse(args),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
+  );
 
   function invoicedataFilters() {
     if (!invoiceDataSWR) return;
@@ -54,6 +62,32 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.push('/?new-invoice');
   }
 
+  function editForm(id: string) {
+    const invoiceItem = (invoiceDataSWR as InvoiceDetails[]).find((invoice) => invoice.id === id);
+    setEditFormState(true);
+    setHandleInput({
+      streetAddressInputRef: invoiceItem?.sender.street || '',
+      cityInputRef: invoiceItem?.sender.city || '',
+      postalCodeInputRef: invoiceItem?.sender.postalCode || '',
+      countryInputRef: invoiceItem?.sender.country || '',
+      clientNameInputRef: invoiceItem?.client.name || '',
+      clientEmailInputRef: invoiceItem?.client.email || '',
+      clientStreetAddressInputRef: invoiceItem?.client.street || '',
+      clientCityInputRef: invoiceItem?.client.city || '',
+      clientPostalCodeInputRef: invoiceItem?.client.postalCode || '',
+      clientCountryInputRef: invoiceItem?.client.country || '',
+      projectDescriptionInputRef: invoiceItem?.description || ''
+    });
+
+    setDetailsInput({
+      date: new Date(invoiceItem?.createdAt || new Date()),
+      paymentTerms: PaymentTermsEnum[`${invoiceItem?.paymentTerms || 'Net 1 Day'}`]
+    });
+    setItemCounter(invoiceItem?.items || []);
+    setInvoiceFormVisiblity(true);
+    router.push(`/${id}?edit`);
+  }
+
   function updateStatus(invoiceId: string, statusUpdate: 'paid' | 'draft' | 'pending') {
     const newState = structuredClone(invoiceDataSWR as InvoiceDetails[]);
     const invoiceIndex = newState.findIndex((invoice) => invoice.id === invoiceId);
@@ -68,7 +102,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     mutate([...filteredItems], { revalidate: false });
   }
 
-  function unmountForm() {
+  function unmountForm(
+    config: { navigateHome?: boolean; id?: string | undefined } = {
+      navigateHome: false,
+      id: undefined
+    }
+  ) {
     setHandleInput((prevState) => {
       const newState = structuredClone(prevState);
       for (const inputRef in newState) {
@@ -79,10 +118,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       return newState;
     });
     setInvoiceFormVisiblity(false);
-    router.push('/');
+    if (config.navigateHome || !editFormState) {
+      router.push('/');
+    }
+    if (config.id) {
+      router.push(`${config.id}`);
+    }
+    setEditFormState(false);
   }
 
-  function clearForm() {
+  function clearForm(navigateHome = false) {
     setHandleInput((prevState) => {
       const newState = structuredClone(prevState);
       for (const inputRef in newState) {
@@ -96,13 +141,21 @@ function MyApp({ Component, pageProps }: AppProps) {
     });
     setItemCounter([]);
     setInvoiceFormVisiblity(false);
-    router.push('/');
+    if (navigateHome) {
+      router.push('/');
+    }
+    setEditFormState(false);
   }
 
-  function saveChanges(options = { draft: false }) {
+  function saveChanges(
+    options: { draft?: boolean; id?: string | undefined } = { draft: false, id: undefined }
+  ) {
+    const invoiceItem = (invoiceDataSWR as InvoiceDetails[]).find(
+      (invoice) => invoice.id === options.id
+    );
     const newInvoice: InvoiceDetails = {
-      id: newIdTag(),
-      createdAt: new Date().toLocaleDateString(),
+      id: invoiceItem ? invoiceItem.id : newIdTag(),
+      createdAt: invoiceItem ? invoiceItem.createdAt : new Date().toLocaleDateString(),
       paymentDue: detailsInput.date.toLocaleDateString(),
       description: formRefs.projectDescriptionInputRef?.current?.value ?? '',
       paymentTerms: detailsInput.paymentTerms,
@@ -123,10 +176,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       items: itemCounter,
       status: options.draft ? 'draft' : 'pending'
     };
-    mutate([...invoiceDataSWR, newInvoice], { revalidate: false });
+    if (!invoiceItem && Array.isArray(invoiceDataSWR))
+      mutate([...invoiceDataSWR, newInvoice], { revalidate: false });
+    if (invoiceItem && Array.isArray(invoiceDataSWR)) {
+      const newState = structuredClone(invoiceDataSWR);
+      const invoiceItemIndex = newState.findIndex((invoice) => invoice.id === invoiceItem.id);
+      newState.splice(invoiceItemIndex, 1, invoiceItem);
+      mutate(newState, { revalidate: false });
+    }
     clearForm();
   }
   const formProps = {
+    editFormState,
     formRefs,
     filterByStatus,
     setFilterByStatus,
@@ -135,6 +196,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     saveChanges,
     clearForm,
     mountForm,
+    editForm,
     unmountForm,
     handleInput,
     setHandleInput,
@@ -147,7 +209,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <Layout formProps={formProps} invoiceDataSWR={invoiceDataSWR}>
+    <Layout formProps={formProps} invoiceDataSWR={invoiceDataSWR ?? []}>
       <Component
         {...pageProps}
         {...formProps}
