@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 import useSwr from 'swr';
 import { newIdTag } from '../components/helpers';
 import { invoiceDataJson, InvoiceDetails } from '../data/invoice-data';
-import useFormRefs from '../components/useFormRefs';
+import useFormRefs from '../hooks/useFormRefs';
 import { FilteredStatusType, formRefsType, InputRefs, PaymentTermsEnum } from '../components/types';
 
 const initialItemCounterState = [
@@ -46,7 +46,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       filteredData.push(
         ...(invoiceDataSWR as InvoiceDetails[]).filter((item) => item.status === 'pending')
       );
-    console.log(filteredData);
     return filteredData;
   }
 

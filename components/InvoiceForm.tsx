@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PaymentTermsEnum } from './types';
 import type { InputRefs, ItemCounterType, formRefsType, DetailsInputType } from './types';
@@ -8,6 +8,7 @@ import InvoiceFormFieldSetItems from './InvoiceFormFieldSetItems';
 import DatePicker from 'react-datepicker';
 import InvoiceFormInputElement from './InvoiceFormInputElement';
 import GoBackHeader from './GoBackHeader';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 export default function InvoiceForm(props: {
   detailsInput: DetailsInputType;
@@ -21,6 +22,7 @@ export default function InvoiceForm(props: {
   saveChanges: (options?: { draft: boolean }) => void;
   formRefs: formRefsType;
 }) {
+  const minWidthLg = useMediaQuery('(min-width: 1024px)');
   const PaymentTermsEnumToOptions = (
     Object.keys(PaymentTermsEnum) as Array<keyof typeof PaymentTermsEnum>
   ).map((item) => <option key={item}>{PaymentTermsEnum[item]}</option>);
@@ -62,22 +64,28 @@ export default function InvoiceForm(props: {
       return newState;
     });
   }
+  const windowSpeed = document.body.clientHeight / window.innerHeight;
+
+  const formVariants = minWidthLg
+    ? { exit: { translateX: -100, transition: { ease: 'easeIn' }, opacity: 0 } }
+    : { exit: { translateX: '-100%', opacity: 0, transition: { delay: 0.5 * windowSpeed } } };
 
   return (
-    <div className="relative flex">
+    <>
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, pointerEvents: 'none' }}
+        exit={{ opacity: 0, transition: { ease: 'easeIn' }, pointerEvents: 'none' }}
         onClick={props.unmountForm}
-        className="fixed h-screen w-full bg-slate-800/50"></motion.section>
+        className="fixed min-h-screen w-full bg-slate-800/50"></motion.section>
 
       <motion.div
-        initial={{ x: -500 }}
-        animate={{ x: 0 }}
-        exit={{ x: -725 }}
-        className="absolute top-0 z-20 h-screen w-full overflow-hidden bg-white md:w-3/5 md:pl-32 lg:rounded-2xl">
-        <div className="flex h-full items-start justify-center overflow-y-scroll scroll-smooth md:pr-12">
+        variants={formVariants}
+        initial={{ translateX: -100 }}
+        animate={{ translateX: 0 }}
+        exit="exit"
+        className="absolute top-24 z-40 flex min-h-screen w-full overflow-hidden bg-white lg:absolute lg:left-16 lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:rounded-r-2xl lg:pl-8">
+        <div className="flex h-full grow items-start justify-center scroll-smooth lg:overflow-y-scroll lg:px-12">
           <div className="max-w-lg px-8 py-8 lg:py-12">
             <GoBackHeader unmountForm={props.unmountForm} />
             <h2 className="pb-4 text-3xl font-bold text-slate-700 lg:pb-12">New Invoice</h2>
@@ -136,28 +144,28 @@ export default function InvoiceForm(props: {
               className="mt-10 w-full rounded-full bg-slate-100 py-4 font-semibold text-slate-500 transition hover:bg-slate-200">
               + Add New Item
             </button>
-            <div className="flex justify-between pt-12">
+            <div className="flex justify-between pt-12 text-sm">
               <button
-                onClick={props.clearForm}
-                className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500">
+                onClick={props.unmountForm}
+                className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
                 Discard
               </button>
-              <div className="flex gap-3">
+              <div className="flex gap-1 lg:gap-3">
                 <button
                   onClick={() => props.saveChanges({ draft: true })}
-                  className="rounded-full bg-slate-600 py-4 px-7 font-semibold text-slate-200">
-                  Save as Draft
+                  className="rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
+                  Save <span className="hidden lg:block"> as </span> Draft
                 </button>
                 <button
                   onClick={() => props.saveChanges()}
-                  className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white">
-                  Save &amp; Send
+                  className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                  Save <span className="hidden lg:block">&amp; Send</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
       </motion.div>
-    </div>
+    </>
   );
 }

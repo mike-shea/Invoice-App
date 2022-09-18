@@ -40,7 +40,7 @@ export default function Layout(props: {
         <div id="modal-layouts"></div>
         <main
           className={`flex min-h-screen grow flex-col items-center bg-slate-100 ${
-            props.formProps.invoiceFormVisbility && 'h-screen overflow-hidden'
+            props.formProps.invoiceFormVisbility ? 'h-screen overflow-hidden' : ''
           }`}>
           {props.children}
         </main>

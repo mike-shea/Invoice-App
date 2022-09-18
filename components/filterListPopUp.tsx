@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FilteredStatusType } from './types';
-import usePortal from './usePortal';
+import usePortal from '../hooks/usePortal';
 
 function CheckBox(props: {
   label: string;

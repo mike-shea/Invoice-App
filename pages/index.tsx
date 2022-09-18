@@ -1,4 +1,3 @@
-import { NextPage } from 'next';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from '../components/header';
@@ -11,6 +10,7 @@ import {
   ItemCounterType
 } from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Home(props: {
   filterByStatus: FilteredStatusType;
@@ -37,14 +37,21 @@ export default function Home(props: {
     }
   }, [router.asPath]);
   return (
-    <div className="flex w-full flex-col lg:max-w-4xl lg:p-12">
-      <Header
-        filterByStatus={props.filterByStatus}
-        setFilterByStatus={props.setFilterByStatus}
-        mountForm={props.mountForm}
-        invoiceItemLength={props.invoiceDataSWR?.length}
-      />
-      <InvoiceList invoiceData={props.filteredInvoiceDataSwr} />
-    </div>
+    <AnimatePresence>
+      <motion.div
+        key="formList"
+        className="flex w-full flex-col gap-8 p-6 lg:max-w-4xl lg:p-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}>
+        <Header
+          filterByStatus={props.filterByStatus}
+          setFilterByStatus={props.setFilterByStatus}
+          mountForm={props.mountForm}
+          invoiceItemLength={props.invoiceDataSWR?.length}
+        />
+        <InvoiceList invoiceData={props.filteredInvoiceDataSwr} />
+      </motion.div>
+    </AnimatePresence>
   );
 }

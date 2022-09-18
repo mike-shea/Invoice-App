@@ -65,7 +65,7 @@ export default function InvoiceFormItemElement(props: {
   }, [itemPriceInput]);
 
   return (
-    <div className="grid w-full grid-cols-7 gap-x-4">
+    <li className="grid w-full grid-cols-7 gap-x-4">
       <p className="col-span-7 pb-2 text-slate-500 lg:col-span-3">
         <label>Name</label>
         <input
@@ -112,6 +112,6 @@ export default function InvoiceFormItemElement(props: {
           </button>
         </p>
       </div>
-    </div>
+    </li>
   );
 }
