@@ -160,8 +160,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
     const newInvoice: InvoiceDetails = {
       id: invoiceItem ? invoiceItem.id : newIdTag(),
-      createdAt: invoiceItem ? invoiceItem.createdAt : new Date().toLocaleDateString(),
-      paymentDue: detailsInput.date.toLocaleDateString(),
+      createdAt: invoiceItem ? invoiceItem.createdAt : new Date().toISOString(),
+      paymentDue: detailsInput.date.toISOString(),
       description: formRefs.projectDescriptionInputRef?.current?.value ?? '',
       paymentTerms: detailsInput.paymentTerms,
       sender: {

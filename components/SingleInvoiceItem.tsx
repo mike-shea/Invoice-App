@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { InvoiceDetails } from '../data/invoice-data';
 import { ChevronRightSvg } from './IconComponents';
@@ -61,7 +60,7 @@ export default function SingleInvoiceItem(props: InvoiceDetails) {
       <a>
         <li
           tabIndex={0}
-          className="group grid cursor-pointer grid-cols-2 items-center justify-between gap-y-1 rounded-lg bg-white p-6 text-sm text-slate-800 transition sm:grid-cols-5 lg:p-8 ">
+          className="group grid cursor-pointer grid-cols-2 items-center justify-between gap-y-1 rounded-lg bg-white p-6 text-sm text-slate-800 ring-blue-400 transition hover:shadow-md hover:ring-2 sm:grid-cols-5 lg:p-8 ">
           <p className="flex w-36 gap-1 font-bold">
             <span className="text-slate-300"># </span> {props.id.toLocaleUpperCase()}
           </p>
@@ -78,7 +77,7 @@ export default function SingleInvoiceItem(props: InvoiceDetails) {
             </div>
             <ChevronRightSvg
               classGroup="hidden lg:block group-hover:translate-x-1 transition h-8 w-8"
-              className="fill-blue-600"
+              className="fill-slate-400 group-hover:fill-blue-600"
             />
           </div>
         </li>

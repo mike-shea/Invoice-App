@@ -79,12 +79,12 @@ export default function InvoiceForm(props: {
 
   return (
     <>
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { ease: 'easeIn' }, pointerEvents: 'none' }}
+      <motion.div
+        // initial={{ opacity: 0 }}
+        // animate={{ opacity: 1 }}
+        exit={{ opacity: 0, transition: { ease: 'easeIn', duration: 0.15 }, pointerEvents: 'none' }}
         onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
-        className="fixed z-20 min-h-screen w-full bg-slate-800/50"></motion.section>
+        className="fixed z-20 min-h-screen w-full animate-darken bg-slate-800/50 will-change-[opacity]"></motion.div>
 
       <motion.div
         variants={formVariants}
@@ -165,7 +165,7 @@ export default function InvoiceForm(props: {
             </button>
             <div className="flex justify-between pt-12 text-sm">
               {props.editFormState ? (
-                <div className="flex gap-1 lg:gap-3">
+                <div className="flex grow justify-end gap-1 lg:gap-3">
                   <button
                     onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
                     className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
@@ -174,7 +174,7 @@ export default function InvoiceForm(props: {
                   <button
                     onClick={() => props.saveChanges({ id: invoiceIdParam?.toString() })}
                     className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
-                    Save <span className="hidden lg:block">Changes</span>
+                    Save&nbsp;<span className="hidden lg:block">Changes</span>
                   </button>
                 </div>
               ) : (
@@ -193,7 +193,7 @@ export default function InvoiceForm(props: {
                     <button
                       onClick={() => props.saveChanges()}
                       className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
-                      Save <span className="hidden lg:block">&amp; Send</span>
+                      Save&nbsp;<span className="hidden lg:block">&amp;&nbsp;Send</span>
                     </button>
                   </div>
                 </>

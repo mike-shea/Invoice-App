@@ -16,7 +16,6 @@ export default function Header(props: {
 
   function newInvoice() {
     props.mountForm();
-    props.clearForm();
   }
 
   return (
@@ -33,7 +32,9 @@ export default function Header(props: {
         <div className="relative">
           <button
             onClick={() => setIsComponentVisible((prev) => !prev)}
-            className="flex items-center font-bold text-slate-700">
+            className={`flex items-center rounded-full px-3 py-2 font-bold text-slate-700 transition hover:bg-slate-200 ${
+              isComponentVisible && 'bg-slate-200'
+            }`}>
             <span>Filter&nbsp;</span>
             <span className="hidden lg:inline-block"> by status </span>
             <span className="pl-1 lg:pl-2">

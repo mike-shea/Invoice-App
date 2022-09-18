@@ -39,3 +39,9 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
+@layer base {
+  .btnCommon {
+    @apply flex rounded-full px-5 py-3 font-semibold lg:py-4 lg:px-7;
+  }
+}

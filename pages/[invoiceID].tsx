@@ -91,7 +91,7 @@ export default function InvoiceId(props: {
     },
     { total: 0 }
   );
-
+  console.log(invoiceItem?.createdAt);
   return (
     <AnimatePresence>
       <motion.div
@@ -113,17 +113,17 @@ export default function InvoiceId(props: {
           <div className="hidden gap-3 lg:flex">
             <button
               onClick={() => props.editForm(invoiceItem?.id || '')}
-              className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70">
+              className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70 transition hover:bg-slate-200">
               Edit
             </button>
             <button
               onClick={() => props.deleteInvoice(invoiceItem?.id || '')}
-              className="rounded-full bg-red-400 py-4 px-7 font-semibold text-white">
+              className="rounded-full bg-red-400 py-4 px-7 font-semibold text-white transition hover:bg-red-500">
               Delete
             </button>
             <button
               onClick={() => props.updateStatus(invoiceItem?.id || '', 'paid')}
-              className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white">
+              className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white transition hover:bg-blue-600">
               Mark as Paid
             </button>
           </div>
@@ -150,13 +150,15 @@ export default function InvoiceId(props: {
               <div>
                 <p className="text-slate-400">Invoice Date</p>
                 <p className="text-xl font-bold text-slate-700 lg:text-2xl">
-                  {invoiceItem?.createdAt}
+                  {invoiceItem?.createdAt &&
+                    new Date(invoiceItem?.createdAt).toLocaleDateString('en-GB')}
                 </p>
               </div>
               <div>
                 <p className="text-slate-400">Payment Due</p>
                 <p className="text-xl font-bold text-slate-700 lg:text-2xl">
-                  {invoiceItem?.paymentDue}
+                  {invoiceItem?.paymentDue &&
+                    new Date(invoiceItem?.paymentDue).toLocaleDateString('en-GB')}
                 </p>
               </div>
             </div>
@@ -210,17 +212,17 @@ export default function InvoiceId(props: {
         <div className="flex w-full justify-center gap-3 bg-white py-4 px-4 text-sm">
           <button
             onClick={props.mountForm}
-            className="rounded-full bg-slate-100 py-3 px-5 font-semibold text-slate-500/70">
+            className="rounded-full bg-slate-100 py-3 px-5 font-semibold text-slate-500/70 transition hover:bg-slate-200 hover:text-slate-500">
             Edit
           </button>
           <button
             onClick={() => props.deleteInvoice(invoiceItem?.id || '')}
-            className="rounded-full bg-red-400 py-3 px-5 font-semibold text-white">
+            className="rounded-full bg-red-400 py-3 px-5 font-semibold text-white transition hover:bg-red-500">
             Delete
           </button>
           <button
             onClick={() => props.updateStatus(invoiceItem?.id || '', 'paid')}
-            className="rounded-full bg-blue-500 py-3 px-5 font-semibold text-white">
+            className="rounded-full bg-blue-500 py-3 px-5 font-semibold text-white transition hover:bg-blue-600">
             Mark as Paid
           </button>
         </div>
