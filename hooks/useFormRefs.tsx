@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { InputRefs, DetailsInputType, RefObjectType } from './types';
-import { PaymentTermsEnum } from './types';
+import { InputRefs, DetailsInputType, RefObjectType } from '../components/types';
+import { PaymentTermsEnum } from '../components/types';
 
 const initialRefHandleState = {
   streetAddressInputRef: '',
