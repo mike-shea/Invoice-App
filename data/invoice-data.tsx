@@ -27,8 +27,8 @@ const invoiceData: InvoiceDetails[] = [
   {
     id: 'rt3080',
     status: 'pending',
-    createdAt: '2021-08-18',
-    paymentDue: '2021-08-19',
+    createdAt: '2021-08-18T14:48:00.000Z',
+    paymentDue: '2021-08-22T14:48:00.000Z',
     description: 'Re-branding',
     paymentTerms: PaymentTermsEnum['Net 1 Day'],
     sender: {
@@ -57,8 +57,8 @@ const invoiceData: InvoiceDetails[] = [
   {
     id: 'xm9141',
     status: 'pending',
-    createdAt: '2021-08-21',
-    paymentDue: '2021-09-20',
+    createdAt: '2021-08-22T14:48:00.000Z',
+    paymentDue: '2021-08-24T14:48:00.000Z',
     description: 'Graphic Design',
     paymentTerms: PaymentTermsEnum['Net 30 Days'],
     sender: {
@@ -92,8 +92,8 @@ const invoiceData: InvoiceDetails[] = [
   },
   {
     id: 'rg0314',
-    createdAt: '2021-09-24',
-    paymentDue: '2021-10-01',
+    createdAt: '2022-08-22T14:48:00.000Z',
+    paymentDue: '2022-08-27T14:48:00.000Z',
     description: 'Website Redesign',
     paymentTerms: PaymentTermsEnum['Net 7 Days'],
     status: 'paid',
@@ -122,8 +122,8 @@ const invoiceData: InvoiceDetails[] = [
   },
   {
     id: 'aa1449',
-    createdAt: '2021-10-7',
-    paymentDue: '2021-10-14',
+    createdAt: '2022-06-22T14:48:00.000Z',
+    paymentDue: '2022-07-05T14:48:00.000Z',
     description: 'Re-branding',
     paymentTerms: PaymentTermsEnum['Net 14 Days'],
     status: 'pending',
@@ -158,8 +158,8 @@ const invoiceData: InvoiceDetails[] = [
   },
   {
     id: 'cd9141',
-    createdAt: '2021-10-01',
-    paymentDue: '2021-10-31',
+    createdAt: '2022-05-05T14:48:00.000Z',
+    paymentDue: '2022-05-10T14:48:00.000Z',
     description: 'Landing Page Design',
     paymentTerms: PaymentTermsEnum['Net 14 Days'],
     status: 'pending',
@@ -188,8 +188,8 @@ const invoiceData: InvoiceDetails[] = [
   },
   {
     id: 'fv2353',
-    createdAt: '2021-11-05',
-    paymentDue: '2021-11-12',
+    createdAt: '2022-04-01T14:48:00.000Z',
+    paymentDue: '2022-05-01T14:48:00.000Z',
     description: 'Logo Re-design',
     paymentTerms: PaymentTermsEnum['Net 7 Days'],
     status: 'draft',
@@ -218,8 +218,8 @@ const invoiceData: InvoiceDetails[] = [
   },
   {
     id: 'ty9141',
-    createdAt: '2021-10-01',
-    paymentDue: '2021-10-31',
+    createdAt: '01/10/2021',
+    paymentDue: '01/01/2022',
     description: 'Landing Page Design',
     paymentTerms: PaymentTermsEnum['Net 30 Days'],
     status: 'pending',
