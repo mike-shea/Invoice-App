@@ -92,8 +92,8 @@ export default function InvoiceForm(props: {
         animate={{ translateX: 0 }}
         exit="exit"
         className="absolute top-24 z-40 flex min-h-screen w-full overflow-hidden bg-white lg:absolute lg:left-16 lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:rounded-r-2xl lg:pl-8">
-        <div className="flex h-full grow items-start justify-center scroll-smooth lg:overflow-y-scroll lg:px-12">
-          <div className="max-w-lg px-8 py-8 lg:py-12">
+        <div className="flex h-full grow items-start justify-center scroll-smooth lg:overflow-y-scroll lg:px-4">
+          <div className="max-w-lg px-8 py-8 lg:max-w-xl">
             <GoBackHeader
               unmountForm={props.unmountForm}
               invoiceId={invoiceIdParam?.toString() || null}
@@ -168,12 +168,12 @@ export default function InvoiceForm(props: {
                 <div className="flex gap-1 lg:gap-3">
                   <button
                     onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
-                    className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
                     Cancel
                   </button>
                   <button
                     onClick={() => props.saveChanges({ id: invoiceIdParam?.toString() })}
-                    className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
                     Save <span className="hidden lg:block">Changes</span>
                   </button>
                 </div>
@@ -181,18 +181,18 @@ export default function InvoiceForm(props: {
                 <>
                   <button
                     onClick={() => props.unmountForm({ navigateHome: true })}
-                    className="rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
                     Discard
                   </button>
                   <div className="flex gap-1 lg:gap-3">
                     <button
                       onClick={() => props.saveChanges({ draft: true })}
-                      className="rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
-                      Save <span className="hidden lg:block"> as </span> Draft
+                      className="flex rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
+                      Save Draft
                     </button>
                     <button
                       onClick={() => props.saveChanges()}
-                      className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                      className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
                       Save <span className="hidden lg:block">&amp; Send</span>
                     </button>
                   </div>
