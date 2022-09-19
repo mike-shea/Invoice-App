@@ -8,7 +8,10 @@ export default function InvoiceFormInputElement(props: {
   spanFull?: boolean;
 }) {
   return (
-    <div className={`${props.spanFull && 'col-span-2'} flex w-full flex-col pb-2 text-slate-500`}>
+    <div
+      className={`${
+        props.spanFull && 'col-span-2'
+      } flex w-full flex-col pb-2 text-slate-500 lg:col-span-1`}>
       <label>{props.label}</label>
       <input
         ref={props.inputRef}

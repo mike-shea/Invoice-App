@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { TrashCanSvg } from './IconComponents';
 
 interface itemCounter {
@@ -21,13 +21,41 @@ export default function InvoiceFormItemElement(props: {
   const currentItem = props.itemCounter[currentItemIndex];
 
   const [itemNameInput, setItemNameInput] = useState(currentItem.name || '');
-  const [itemPriceInput, setItemPriceInput] = useState<string>(currentItem.price.toString() || '0');
+  const [itemPriceInput, setItemPriceInput] = useState<string>(currentItem.price || '0');
   const [itemQuantityInput, setItemQuantityInput] = useState<string>(
     currentItem.quantity.toString() || '0'
   );
-  function totalAmount() {
-    return (parseInt(itemPriceInput) || 0) * (parseInt(itemQuantityInput) || 0);
+
+  const priceRef = useRef<HTMLInputElement>(null);
+
+  function handleCurrency(e: React.FocusEvent<HTMLInputElement, Element>) {
+    const value = e.target.value;
+    const ifValueHasDecimal = value.match(/[.]/g);
+    if (ifValueHasDecimal !== null && ifValueHasDecimal.length === 1) {
+      const splitValues = value.split('.');
+      if (splitValues[1].length < 2) {
+        splitValues[1] = splitValues[1].padEnd(2, '0');
+      }
+      if (splitValues[1].length > 2) {
+        splitValues[1] = splitValues[1].substring(0, 2);
+      }
+      return splitValues.join('');
+    }
+    if (ifValueHasDecimal === null) {
+      return (parseInt(value) * 100).toString();
+    }
   }
+
+  function handlePriceOnBlur(e: React.FocusEvent<HTMLInputElement, Element>) {
+    const amount = handleCurrency(e);
+    setItemPriceInput(amount ?? '0');
+  }
+
+  function totalAmount() {
+    const amount = (parseInt(itemPriceInput) / 100 || 0) * (parseInt(itemQuantityInput) || 0);
+    return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
+  }
+
   useEffect(() => {
     if (parseInt(itemQuantityInput) > 0) {
       props.setItemCounter((prevState) => {
@@ -65,52 +93,60 @@ export default function InvoiceFormItemElement(props: {
   }, [itemPriceInput]);
 
   return (
-    <li className="grid w-full grid-cols-7 gap-x-4">
-      <p className="col-span-7 pb-2 text-slate-500 lg:col-span-3">
-        <label>Name</label>
+    <li className="flex w-full gap-x-4 pb-2 text-slate-500">
+      <div className="flex grow flex-col">
+        <label htmlFor="nameinput">Name</label>
         <input
+          id="nameinput"
           onChange={(e) => setItemNameInput(e.target.value)}
           className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
           type="text"
           value={itemNameInput}
         />
-      </p>
-      <p className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
-        <label>Quantity</label>
+      </div>
+      <div className="w-16">
+        <label htmlFor="quantityinput">Qty.</label>
         <input
+          id="quantityinput"
           onChange={(e) => setItemQuantityInput(e.target.value)}
           className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
           type="text"
           value={itemQuantityInput}
         />
-      </p>
-      <p className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
-        <label>Price</label>
-        <input
-          onChange={(e) => setItemPriceInput(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
-          type="text"
-          value={itemPriceInput}
-        />
-      </p>
-      <div className="col-span-2 pb-2 text-slate-500 lg:col-span-1">
-        <label>Total</label>
-        <p className="w-full p-2 text-slate-900">{totalAmount()}</p>
       </div>
-      <div className="pb-2 text-slate-500">
+      <div className="w-32">
+        <label htmlFor="priceinput">Price</label>
+        <div className="relative w-full">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <span className="text-slate-400 sm:text-sm">$</span>
+          </div>
+          <input
+            onBlur={handlePriceOnBlur}
+            ref={priceRef}
+            type="text"
+            name="priceinput"
+            id="priceinput"
+            defaultValue={parseInt(itemPriceInput) / 100}
+            className="w-full rounded-lg border border-slate-300 p-2 pl-7 text-slate-900"
+          />
+        </div>
+      </div>
+      <div className="w-20">
+        <label>Total</label>
+        <p className="w-24 truncate py-2 text-slate-500">{totalAmount()}</p>
+      </div>
+      <div className="flex w-6 flex-col items-center gap-1">
         <label className="invisible">Delete</label>
-        <p className="w-full p-2 text-slate-900">
-          <button
-            onClick={() => {
-              props.setItemCounter((prevState) => {
-                const newState = [...prevState];
-                return newState.filter((item) => item.id !== props.id);
-              });
-            }}
-            type="button">
-            <TrashCanSvg />
-          </button>
-        </p>
+        <button
+          onClick={() => {
+            props.setItemCounter((prevState) => {
+              const newState = [...prevState];
+              return newState.filter((item) => item.id !== props.id);
+            });
+          }}
+          type="button">
+          <TrashCanSvg classGroup="group" className="transition group-hover:fill-red-500" />
+        </button>
       </div>
     </li>
   );
