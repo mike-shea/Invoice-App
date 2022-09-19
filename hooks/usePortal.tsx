@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 interface usePortalProps {

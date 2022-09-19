@@ -8,15 +8,17 @@ function CheckBox(props: {
   setCheckState: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div className="flex w-full gap-3 lg:gap-6">
+    <div
+      onClick={() => props.setCheckState((prev: boolean) => !prev)}
+      className="group flex w-full cursor-pointer items-center gap-3 ">
       <input
-        onChange={() => props.setCheckState((prev: boolean) => !prev)}
+        className="h-4 w-4 cursor-pointer appearance-none rounded bg-blue-200 group-hover:ring-2 group-hover:ring-blue-600"
         type="checkbox"
         id={props.label}
         name={props.label}
         checked={props.checkState}
       />
-      <label htmlFor={props.label}>{props.label}</label>
+      <p>{props.label}</p>
     </div>
   );
 }
@@ -48,7 +50,7 @@ export default function FilterListPopUp(props: {
     <>
       <div
         ref={props.componentVisibleRef}
-        className="absolute -left-1/2 z-20 mt-3 flex flex-col gap-4 rounded-2xl border-2 border-slate-200 bg-white p-6 lg:-left-3 lg:p-8">
+        className="absolute -left-1/3 z-20 mt-3 flex w-40 flex-col gap-y-2 rounded-2xl bg-white p-6 shadow-xl lg:-left-6 lg:w-52 lg:text-base">
         <CheckBox label="Paid" checkState={paidchecked} setCheckState={setPaidChecked} />
         <CheckBox label="Draft" checkState={draftchecked} setCheckState={setDraftChecked} />
         <CheckBox label="Pending" checkState={pendingchecked} setCheckState={setPendingChecked} />

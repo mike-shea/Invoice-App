@@ -44,4 +44,11 @@ body {
   .btnCommon {
     @apply flex rounded-full px-5 py-3 font-semibold lg:py-4 lg:px-7;
   }
+  input[type='checkbox']:checked {
+    @apply h-4 w-4 bg-blue-500 transition;
+  }
+  input[type='checkbox']:checked:after {
+    content: url('../public/input-checkbox-check.svg');
+    @apply flex h-4 w-4 items-center justify-center;
+  }
 }
