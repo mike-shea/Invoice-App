@@ -10,7 +10,9 @@ export default function InvoiceFormFieldSetItems(props: {
 }) {
   return (
     <fieldset>
-      <legend className=" pt-8 pb-2 font-bold text-blue-600">Items to Add</legend>
+      <legend className=" pt-8 pb-2 font-bold text-blue-600 dark:font-medium dark:text-blue-500">
+        Items to Add
+      </legend>
       <ul className="flex flex-col gap-y-8 ">
         {props.itemCounter.map((item) => {
           return (

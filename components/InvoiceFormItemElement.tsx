@@ -93,28 +93,28 @@ export default function InvoiceFormItemElement(props: {
   }, [itemPriceInput]);
 
   return (
-    <li className="flex w-full gap-x-4 pb-2 text-slate-500">
-      <div className="flex grow flex-col">
+    <li className="flex w-full flex-wrap gap-x-4 gap-y-2 pb-2 text-slate-500 lg:flex-nowrap">
+      <div className="flex w-full flex-col lg:w-auto lg:grow">
         <label htmlFor="nameinput">Name</label>
         <input
           id="nameinput"
           onChange={(e) => setItemNameInput(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
+          className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           type="text"
           value={itemNameInput}
         />
       </div>
-      <div className="w-16">
+      <div className="flex w-12 grow-0 flex-col">
         <label htmlFor="quantityinput">Qty.</label>
         <input
           id="quantityinput"
           onChange={(e) => setItemQuantityInput(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 p-2 text-slate-900"
+          className="w-full rounded-lg border border-slate-300 p-2 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           type="text"
           value={itemQuantityInput}
         />
       </div>
-      <div className="w-32">
+      <div className="flex w-auto grow flex-col md:w-36">
         <label htmlFor="priceinput">Price</label>
         <div className="relative w-full">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -127,15 +127,15 @@ export default function InvoiceFormItemElement(props: {
             name="priceinput"
             id="priceinput"
             defaultValue={parseInt(itemPriceInput) / 100}
-            className="w-full rounded-lg border border-slate-300 p-2 pl-7 text-slate-900"
+            className="w-full rounded-lg border border-slate-300 p-2 pl-7 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           />
         </div>
       </div>
-      <div className="w-20">
+      <div className="hidden md:block md:w-20">
         <label>Total</label>
-        <p className="w-24 truncate py-2 text-slate-500">{totalAmount()}</p>
+        <p className="w-24 truncate py-2 text-slate-500 dark:text-slate-300">{totalAmount()}</p>
       </div>
-      <div className="flex w-6 flex-col items-center gap-1">
+      <div className="flex w-6 flex-col items-center gap-1 ">
         <label className="invisible">Delete</label>
         <button
           onClick={() => {
@@ -145,7 +145,10 @@ export default function InvoiceFormItemElement(props: {
             });
           }}
           type="button">
-          <TrashCanSvg classGroup="group" className="transition group-hover:fill-red-500" />
+          <TrashCanSvg
+            classGroup="group"
+            className="transition group-hover:fill-red-500 dark:fill-slate-500"
+          />
         </button>
       </div>
     </li>

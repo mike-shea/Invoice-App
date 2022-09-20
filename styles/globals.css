@@ -10,18 +10,6 @@ body {
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-/* body::before {
-  content: '';
-  left: 0;
-  top: 0;
-  position: absolute;
-  background: url('../src/img/grain.png');
-  max-height: 100%;
-  width: 100%;
-  opacity: 7%;
-  pointer-events: none;
-} */
-
 a {
   color: inherit;
   text-decoration: none;
@@ -41,8 +29,8 @@ body {
 }
 
 @layer base {
-  .btnCommon {
-    @apply flex rounded-full px-5 py-3 font-semibold lg:py-4 lg:px-7;
+  body {
+    @apply bg-slate-100 dark:bg-slate-900;
   }
   input[type='checkbox']:checked {
     @apply h-4 w-4 bg-blue-500 transition;

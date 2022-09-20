@@ -13,7 +13,9 @@ export default function InvoiceFormFieldSetClient(props: {
 }) {
   return (
     <fieldset>
-      <legend className="pt-8 pb-2 font-bold text-blue-600">Bill To</legend>
+      <legend className="pt-8 pb-2 font-bold text-blue-600 dark:font-medium dark:text-blue-500">
+        Bill To
+      </legend>
       <InvoiceFormInputElement
         prevData={props.handleInput.clientNameInputValue}
         inputRef={props.clientNameInputRef}

@@ -84,24 +84,24 @@ export default function InvoiceForm(props: {
         // animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { ease: 'easeIn', duration: 0.15 }, pointerEvents: 'none' }}
         onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
-        className="fixed z-20 min-h-screen w-full animate-darken bg-slate-800/50 will-change-[opacity]"></motion.div>
+        className="fixed z-20 min-h-screen w-full animate-darken bg-slate-800/50 will-change-[opacity] dark:bg-[#02030c]/70"></motion.div>
 
       <motion.div
         variants={formVariants}
         initial={{ translateX: -100 }}
         animate={{ translateX: 0 }}
         exit="exit"
-        className="absolute top-24 z-40 flex min-h-screen w-full overflow-hidden bg-white lg:absolute lg:left-16 lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:rounded-r-2xl lg:pl-8">
+        className="absolute top-24 z-40 flex min-h-screen w-full overflow-hidden bg-white dark:bg-slate-900 lg:absolute lg:left-16 lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:rounded-r-2xl lg:pl-8">
         <div className="flex h-full grow items-start justify-center scroll-smooth lg:overflow-y-scroll lg:px-4">
           <div className="max-w-lg px-8 py-8 lg:max-w-xl">
             <GoBackHeader
               unmountForm={props.unmountForm}
               invoiceId={invoiceIdParam?.toString() || null}
             />
-            <h2 className="pb-4 text-3xl font-semibold text-slate-700 lg:pb-12">
+            <h2 className="pb-4 text-3xl font-semibold text-slate-700 dark:font-medium dark:text-slate-200 lg:pb-12">
               {props.editFormState && invoiceIdParam ? (
                 <>
-                  Edit <span className="text-slate-400">#</span>
+                  Edit <span className="text-slate-400 dark:text-slate-700">#</span>
                   {invoiceIdParam.toString().toUpperCase()}
                 </>
               ) : (
@@ -112,7 +112,9 @@ export default function InvoiceForm(props: {
               <InvoiceFormFieldSetCurrent {...fieldSetCurrentProps} />
               <InvoiceFormFieldSetClient {...fieldSetClientProps} />
               <fieldset>
-                <legend className="pb-2 pt-8 font-bold text-blue-600">Details</legend>
+                <legend className="pb-2 pt-8 font-bold text-blue-600 dark:font-medium dark:text-blue-500">
+                  Details
+                </legend>
                 <div className="grid w-full grid-cols-2 gap-4">
                   <div className="pb-2 text-slate-500">
                     <label>Invoice Date</label>
@@ -127,12 +129,12 @@ export default function InvoiceForm(props: {
                         })
                       }
                       customInput={
-                        <input className='text-slate-900" w-full rounded-lg border border-slate-300 p-2' />
+                        <input className="w-full cursor-pointer rounded-lg border border-slate-300 p-2 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200" />
                       }
                     />
                   </div>
-                  <p className="pb-2 text-slate-500">
-                    <label>Payment Terms</label>
+                  <p className="pb-3 text-slate-500">
+                    <label className="pb-1">Payment Terms</label>
                     <select
                       defaultValue={props.detailsInput.paymentTerms}
                       onChange={(e) => {
@@ -143,7 +145,7 @@ export default function InvoiceForm(props: {
                           };
                         });
                       }}
-                      className="w-full rounded-lg border border-slate-300 p-2 text-slate-900">
+                      className="w-full cursor-pointer rounded-lg border border-slate-300 p-2 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                       {PaymentTermsEnumToOptions}
                     </select>
                   </p>
@@ -160,7 +162,7 @@ export default function InvoiceForm(props: {
             <button
               onClick={addNewItemClickHandler}
               type="button"
-              className="mt-10 w-full rounded-full bg-slate-100 py-4 font-semibold text-slate-500 transition hover:bg-slate-200">
+              className="mt-10 w-full rounded-full bg-slate-100 py-4 font-semibold text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700/70">
               + Add New Item
             </button>
             <div className="flex justify-between pt-12 text-sm">
@@ -168,12 +170,12 @@ export default function InvoiceForm(props: {
                 <div className="flex grow justify-end gap-1 lg:gap-3">
                   <button
                     onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
-                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/70 lg:py-4 lg:px-7">
                     Cancel
                   </button>
                   <button
                     onClick={() => props.saveChanges({ id: invoiceIdParam?.toString() })}
-                    className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 lg:py-4 lg:px-7">
                     Save&nbsp;<span className="hidden lg:block">Changes</span>
                   </button>
                 </div>
@@ -181,18 +183,18 @@ export default function InvoiceForm(props: {
                 <>
                   <button
                     onClick={() => props.unmountForm({ navigateHome: true })}
-                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 lg:py-4 lg:px-7">
+                    className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/70 lg:py-4 lg:px-7 ">
                     Discard
                   </button>
                   <div className="flex gap-1 lg:gap-3">
                     <button
                       onClick={() => props.saveChanges({ draft: true })}
-                      className="flex rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 lg:py-4 lg:px-7">
+                      className="flex rounded-full bg-slate-600 px-5 py-3 font-semibold text-slate-200 transition  hover:bg-slate-200 dark:border dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800/30 lg:py-4 lg:px-7">
                       Save Draft
                     </button>
                     <button
                       onClick={() => props.saveChanges()}
-                      className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white lg:py-4 lg:px-7">
+                      className="flex rounded-full bg-blue-500 px-5 py-3 font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 lg:py-4 lg:px-7">
                       Save&nbsp;<span className="hidden lg:block">&amp;&nbsp;Send</span>
                     </button>
                   </div>

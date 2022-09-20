@@ -16,6 +16,7 @@ const initialItemCounterState = [
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const [darkmode, setDarkmode] = useState(false);
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
   const [editFormState, setEditFormState] = useState(false);
   const [itemCounter, setItemCounter] = useState(initialItemCounterState);
@@ -64,7 +65,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   function editForm(id: string) {
     const invoiceItem = invoiceDataSWR?.find((invoice) => invoice.id === id);
-    console.log('editForm invoice item:', invoiceItem);
     setEditFormState(true);
     setHandleInput({
       streetAddressInputValue: invoiceItem?.sender.street || '',
@@ -215,7 +215,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <Layout formProps={formProps} invoiceDataSWR={invoiceDataSWR ?? []}>
+    <Layout
+      darkmode={darkmode}
+      setDarkmode={setDarkmode}
+      formProps={formProps}
+      invoiceDataSWR={invoiceDataSWR ?? []}>
       <Component
         {...pageProps}
         {...formProps}
