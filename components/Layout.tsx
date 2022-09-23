@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { AnimatePresence } from 'framer-motion';
 import InvoiceForm from '../components/InvoiceForm';
-import Nav from '../components/Nav';
+import Nav from './Nav';
 
 import {
   InputRefs,
@@ -40,7 +40,7 @@ export default function Layout(props: {
         <meta name="description" content="created by oh-that-mike" />
       </Head>
       <div className="flex flex-col lg:flex-row">
-        <Nav darkmode={props.darkmode} setDarkmode={props.setDarkmode} />
+        <Nav />
         <AnimatePresence>
           {props.formProps.invoiceFormVisbility && (
             <InvoiceForm {...props.formProps} editFormState={props.formProps.editFormState} />
