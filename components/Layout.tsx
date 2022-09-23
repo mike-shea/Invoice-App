@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { AnimatePresence } from 'framer-motion';
 import InvoiceForm from '../components/InvoiceForm';
-import Nav from './Nav';
+import Nav from '../components/Nav';
 
 import {
   InputRefs,
