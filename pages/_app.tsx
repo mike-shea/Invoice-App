@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import useSwr, { KeyedMutator } from 'swr';
@@ -238,18 +239,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <Layout
-      darkmode={darkmode}
-      setDarkmode={setDarkmode}
-      formProps={formProps}
-      invoiceDataSWR={invoiceDataSWR ?? []}>
-      <Component
-        {...pageProps}
-        {...formProps}
-        invoiceDataSWR={invoiceDataSWR}
-        filteredInvoiceDataSwr={invoicedataFilters()}
-      />
-    </Layout>
+    <ThemeProvider attribute="class">
+      <Layout
+        darkmode={darkmode}
+        setDarkmode={setDarkmode}
+        formProps={formProps}
+        invoiceDataSWR={invoiceDataSWR ?? []}>
+        <Component
+          {...pageProps}
+          {...formProps}
+          invoiceDataSWR={invoiceDataSWR}
+          filteredInvoiceDataSwr={invoicedataFilters()}
+        />
+      </Layout>
+    </ThemeProvider>
   );
 }
 

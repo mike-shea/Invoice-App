@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 import { LogoSvg2, MoonSvg, SunSvg } from './IconComponents';
 
@@ -9,6 +10,7 @@ export default function Nav(props: {
   darkmode: boolean;
   setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { theme, setTheme } = useTheme();
   return (
     <>
       <div className="hidden min-h-screen w-28 flex-col bg-slate-100 transition dark:bg-slate-900 lg:flex"></div>
@@ -21,9 +23,9 @@ export default function Nav(props: {
         </div>
         <div className="flex items-center gap-8 lg:flex-col">
           <button
-            onClick={() => props.setDarkmode((prev) => !prev)}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             className="group aspect-square w-12 overflow-hidden rounded-full bg-slate-900/50 p-2">
-            {props.darkmode ? (
+            {theme === 'light' ? (
               <SunSvg
                 classGroup="w-full h-full"
                 className="fill-slate-500 transition group-hover:fill-slate-200"
