@@ -1,6 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { DetailsInputType, formRefsType, InputRefs, ItemCounterType } from '../components/types';
+import {
+  DetailsInputType,
+  formRefsType,
+  InputRefs,
+  ItemCounterType,
+  unMountFormConfig
+} from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
 import GoBackHeader from '../components/GoBackHeader';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -58,7 +64,7 @@ export default function InvoiceId(props: {
   clearForm: () => void;
   editForm: (id: string) => void;
   mountForm: () => void;
-  unmountForm: () => void;
+  unmountForm: (config?: unMountFormConfig) => void;
   saveChanges: (options?: { draft: boolean }) => void;
   formRefs: formRefsType;
 }) {
@@ -93,7 +99,6 @@ export default function InvoiceId(props: {
     },
     { total: 0 }
   );
-  console.log(invoiceItem?.createdAt);
   return (
     <AnimatePresence>
       <motion.div
@@ -102,7 +107,7 @@ export default function InvoiceId(props: {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="flex w-full max-w-4xl grow flex-col items-start px-4 pt-8 lg:p-12">
-        <GoBackHeader unmountForm={props.unmountForm} />
+        <GoBackHeader unmountForm={props.unmountForm} eraseHistory={true} invoiceId={null} />
         <section className="mb-8 flex w-full items-center justify-between rounded-2xl bg-white p-6 dark:bg-slate-800 lg:p-8 ">
           <div className="flex w-full items-center justify-between gap-4 lg:w-auto">
             <p className="text-slate-500 dark:text-slate-300">Status</p>

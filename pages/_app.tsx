@@ -5,7 +5,12 @@ import useSwr, { KeyedMutator } from 'swr';
 import { newIdTag } from '../components/helpers';
 import Layout from '../components/Layout';
 import '../components/react-datepicker2.css';
-import { FilteredStatusType, formRefsType, InputRefs, PaymentTermsEnum } from '../components/types';
+import {
+  FilteredStatusType,
+  InputRefs,
+  PaymentTermsEnum,
+  unMountFormConfig
+} from '../components/types';
 import { invoiceDataJson, InvoiceDetails } from '../data/invoice-data';
 import useFormRefs from '../hooks/useFormRefs';
 import '../styles/globals.css';
@@ -104,32 +109,50 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   function unmountForm(
-    config: { navigateHome?: boolean; id?: string | undefined } = {
+    config: unMountFormConfig = {
       navigateHome: false,
-      id: undefined
+      id: undefined,
+      eraseHistory: false
     }
   ) {
-    setHandleInput({
-      streetAddressInputValue: formRefs.streetAddressInputRef.current?.value || '',
-      cityInputValue: formRefs.cityInputRef.current?.value || '',
-      postalCodeInputValue: formRefs.postalCodeInputRef.current?.value || '',
-      countryInputValue: formRefs.countryInputRef.current?.value || '',
-      clientNameInputValue: formRefs.clientNameInputRef.current?.value || '',
-      clientEmailInputValue: formRefs.clientEmailInputRef.current?.value || '',
-      clientStreetAddressInputValue: formRefs.clientStreetAddressInputRef.current?.value || '',
-      clientCityInputValue: formRefs.clientCityInputRef.current?.value || '',
-      clientPostalCodeInputValue: formRefs.clientPostalCodeInputRef.current?.value || '',
-      clientCountryInputValue: formRefs.clientCountryInputRef.current?.value || '',
-      projectDescriptionInputValue: formRefs.projectDescriptionInputRef.current?.value || ''
-    });
-    setInvoiceFormVisiblity(false);
-    if (config.navigateHome || !editFormState) {
+    if (!config.eraseHistory) {
+      setHandleInput({
+        streetAddressInputValue: formRefs.streetAddressInputRef.current?.value || '',
+        cityInputValue: formRefs.cityInputRef.current?.value || '',
+        postalCodeInputValue: formRefs.postalCodeInputRef.current?.value || '',
+        countryInputValue: formRefs.countryInputRef.current?.value || '',
+        clientNameInputValue: formRefs.clientNameInputRef.current?.value || '',
+        clientEmailInputValue: formRefs.clientEmailInputRef.current?.value || '',
+        clientStreetAddressInputValue: formRefs.clientStreetAddressInputRef.current?.value || '',
+        clientCityInputValue: formRefs.clientCityInputRef.current?.value || '',
+        clientPostalCodeInputValue: formRefs.clientPostalCodeInputRef.current?.value || '',
+        clientCountryInputValue: formRefs.clientCountryInputRef.current?.value || '',
+        projectDescriptionInputValue: formRefs.projectDescriptionInputRef.current?.value || ''
+      });
+    }
+    if (config.navigateHome) {
       router.push('/');
+    }
+    if (config.eraseHistory) {
+      console.log('erasing history');
+      setDetailsInput({
+        date: new Date(),
+        paymentTerms: PaymentTermsEnum['Net 1 Day']
+      });
+      setItemCounter([]);
+      setHandleInput((prevState) => {
+        const newState = structuredClone(prevState);
+        for (const inputRef in newState) {
+          newState[inputRef as keyof InputRefs] = '';
+        }
+        return newState;
+      });
     }
     if (config.id) {
       router.push(`${config.id}`);
     }
     setEditFormState(false);
+    setInvoiceFormVisiblity(false);
   }
 
   function clearForm(navigateHome = false) {

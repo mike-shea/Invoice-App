@@ -51,6 +51,13 @@ interface FilteredStatusType {
   paid: boolean;
 }
 
+// App functions
+type unMountFormConfig = {
+  navigateHome: boolean;
+  id: string | undefined;
+  eraseHistory: boolean;
+};
+
 export { PaymentTermsEnum };
 export type {
   InputRefs,
@@ -58,5 +65,6 @@ export type {
   formRefsType,
   ItemCounterType,
   RefObjectType,
-  DetailsInputType
+  DetailsInputType,
+  unMountFormConfig
 };

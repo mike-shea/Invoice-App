@@ -4,7 +4,13 @@ import { AnimatePresence } from 'framer-motion';
 import InvoiceForm from '../components/InvoiceForm';
 import Nav from './Nav';
 
-import { InputRefs, formRefsType, DetailsInputType, ItemCounterType } from '../components/types';
+import {
+  InputRefs,
+  formRefsType,
+  DetailsInputType,
+  ItemCounterType,
+  unMountFormConfig
+} from '../components/types';
 import type { InvoiceDetails } from '../data/invoice-data';
 
 export default function Layout(props: {
@@ -21,7 +27,7 @@ export default function Layout(props: {
     setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
     clearForm: () => void;
     mountForm: () => void;
-    unmountForm: () => void;
+    unmountForm: (config?: unMountFormConfig) => void;
     saveChanges: (options?: { draft?: boolean; id?: string | undefined }) => void;
     formRefs: formRefsType;
     editFormState: boolean;

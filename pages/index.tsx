@@ -7,7 +7,8 @@ import {
   FilteredStatusType,
   formRefsType,
   InputRefs,
-  ItemCounterType
+  ItemCounterType,
+  unMountFormConfig
 } from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -26,11 +27,7 @@ export default function Home(props: {
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
   clearForm: () => void;
   mountForm: () => void;
-  unmountForm: (config: {
-    navigateHome?: boolean;
-    navigateId?: boolean;
-    id?: string | undefined;
-  }) => void;
+  unmountForm: (config?: unMountFormConfig) => void;
   saveChanges: (options?: { draft: boolean }) => void;
   formRefs: formRefsType;
 }) {

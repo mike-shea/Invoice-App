@@ -1,21 +1,29 @@
 import { ChevronLeftSvg } from './IconComponents';
+import { unMountFormConfig } from './types';
 
 export default function GoBackHeader(props: {
-  invoiceId?: string | null;
-  unmountForm: (config: {
-    navigateHome?: boolean;
-    navigateId?: boolean;
-    id?: string | undefined;
-  }) => void;
+  invoiceId: string | undefined | null;
+  eraseHistory: boolean;
+  unmountForm: (config?: unMountFormConfig) => void;
 }) {
   return (
     <div className="flex pb-4">
       <button
         onClick={() => {
-          if (props.invoiceId != null && props.invoiceId.length > 0)
-            props.unmountForm({ navigateId: true, id: props.invoiceId });
-          else {
-            props.unmountForm({ navigateHome: true });
+          if (props.invoiceId) {
+            console.log('unmounting with ID');
+            props.unmountForm({ navigateHome: false, id: props.invoiceId, eraseHistory: false });
+            return;
+          }
+          if (!props.invoiceId) {
+            console.log('unmounting WITHOUT ID');
+            console.log('eraseHistory:', props.eraseHistory);
+            console.log('invoiceID:', props.invoiceId);
+            props.unmountForm({
+              navigateHome: true,
+              id: undefined,
+              eraseHistory: props.eraseHistory
+            });
           }
         }}
         className="group flex items-center gap-2 lg:gap-4 lg:p-2">

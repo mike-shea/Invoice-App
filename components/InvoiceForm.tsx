@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { PaymentTermsEnum } from './types';
+import { PaymentTermsEnum, unMountFormConfig } from './types';
 import type { InputRefs, ItemCounterType, formRefsType, DetailsInputType } from './types';
 import InvoiceFormFieldSetCurrent from './InvoiceFormFieldSetCurrent';
 import InvoiceFormFieldSetClient from './InvoiceFormFieldSetClient';
@@ -20,7 +20,7 @@ export default function InvoiceForm(props: {
   itemCounter: ItemCounterType[];
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
   clearForm: () => void;
-  unmountForm: (config: { navigateHome?: boolean; id?: string | undefined }) => void;
+  unmountForm: (config?: unMountFormConfig) => void;
   saveChanges: (options?: { draft?: boolean; id?: string | undefined }) => void;
   formRefs: formRefsType;
   editFormState: boolean;
@@ -80,10 +80,14 @@ export default function InvoiceForm(props: {
   return (
     <>
       <motion.div
-        // initial={{ opacity: 0 }}
-        // animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { ease: 'easeIn', duration: 0.15 }, pointerEvents: 'none' }}
-        onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
+        onClick={() =>
+          props.unmountForm({
+            id: invoiceIdParam?.toString(),
+            navigateHome: !props.editFormState,
+            eraseHistory: router.asPath !== '/?new-invoice'
+          })
+        }
         className="fixed z-20 min-h-screen w-full animate-darken bg-slate-800/50 will-change-[opacity] dark:bg-[#02030c]/70"></motion.div>
 
       <motion.div
@@ -96,6 +100,7 @@ export default function InvoiceForm(props: {
           <div className="max-w-lg px-8 py-8 lg:max-w-xl">
             <GoBackHeader
               unmountForm={props.unmountForm}
+              eraseHistory={router.asPath !== '/?new-invoice'}
               invoiceId={invoiceIdParam?.toString() || null}
             />
             <h2 className="pb-4 text-3xl font-semibold text-slate-700 dark:font-medium dark:text-slate-200 lg:pb-12">
@@ -169,7 +174,13 @@ export default function InvoiceForm(props: {
               {props.editFormState ? (
                 <div className="flex grow justify-end gap-1 lg:gap-3">
                   <button
-                    onClick={() => props.unmountForm({ id: invoiceIdParam?.toString() })}
+                    onClick={() =>
+                      props.unmountForm({
+                        id: invoiceIdParam?.toString(),
+                        navigateHome: false,
+                        eraseHistory: false
+                      })
+                    }
                     className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/70 lg:py-4 lg:px-7">
                     Cancel
                   </button>
@@ -182,7 +193,9 @@ export default function InvoiceForm(props: {
               ) : (
                 <>
                   <button
-                    onClick={() => props.unmountForm({ navigateHome: true })}
+                    onClick={() =>
+                      props.unmountForm({ navigateHome: true, id: undefined, eraseHistory: true })
+                    }
                     className="flex rounded-full bg-slate-100 px-5 py-3 font-semibold text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/70 lg:py-4 lg:px-7 ">
                     Discard
                   </button>
