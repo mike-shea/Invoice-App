@@ -8,7 +8,6 @@ export default function useHandleClickOutside(initialIsVisible: boolean) {
     (event: MouseEvent) => {
       if (isComponentVisible && ref.current && !ref.current.contains(event.target as Node)) {
         setIsComponentVisible(false);
-        console.log('clicked outside');
       }
     },
     [isComponentVisible]

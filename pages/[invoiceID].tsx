@@ -219,20 +219,20 @@ export default function InvoiceId(props: {
         </section>
       </motion.div>
       <div className="flex w-full grow items-end pt-8 lg:hidden">
-        <div className="flex w-full justify-center gap-3 bg-white py-4 px-4 text-sm">
+        <div className="flex w-full justify-center gap-3 bg-white py-4 px-4 text-sm dark:bg-slate-800">
           <button
             onClick={() => props.editForm(invoiceItem?.id || '')}
-            className="rounded-full bg-slate-100 py-3 px-5 font-semibold text-slate-500/70 transition hover:bg-slate-200 hover:text-slate-500">
+            className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600/70">
             Edit
           </button>
           <button
             onClick={() => props.deleteInvoice(invoiceItem?.id || '')}
-            className="rounded-full bg-red-400 py-3 px-5 font-semibold text-white transition hover:bg-red-500">
+            className="rounded-full bg-red-400 py-4 px-7 font-semibold text-white transition hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700">
             Delete
           </button>
           <button
             onClick={() => props.updateStatus(invoiceItem?.id || '', 'paid')}
-            className="rounded-full bg-blue-500 py-3 px-5 font-semibold text-white transition hover:bg-blue-600">
+            className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 lg:py-4 lg:px-7">
             Mark as Paid
           </button>
         </div>

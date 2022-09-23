@@ -11,14 +11,10 @@ export default function GoBackHeader(props: {
       <button
         onClick={() => {
           if (props.invoiceId) {
-            console.log('unmounting with ID');
             props.unmountForm({ navigateHome: false, id: props.invoiceId, eraseHistory: false });
             return;
           }
           if (!props.invoiceId) {
-            console.log('unmounting WITHOUT ID');
-            console.log('eraseHistory:', props.eraseHistory);
-            console.log('invoiceID:', props.invoiceId);
             props.unmountForm({
               navigateHome: true,
               id: undefined,
