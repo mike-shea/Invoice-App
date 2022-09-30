@@ -14,8 +14,6 @@ import {
 import type { InvoiceDetails } from '../data/invoice-data';
 
 export default function Layout(props: {
-  darkmode: boolean;
-  setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
   invoiceDataSWR: InvoiceDetails[];
   children?: React.ReactNode;
   formProps: {
@@ -34,7 +32,7 @@ export default function Layout(props: {
   };
 }) {
   return (
-    <div className={`${props.darkmode ? 'dark' : ''} `}>
+    <div>
       <Head>
         <title>Invoice Application Demo</title>
         <meta name="description" content="created by oh-that-mike" />

@@ -248,7 +248,7 @@ const invoiceData: InvoiceDetails[] = [
   }
 ];
 
-const invoiceDataJson = JSON.stringify(invoiceData);
+const initialData = JSON.stringify(invoiceData);
 
-export { invoiceData, invoiceDataJson };
+export { invoiceData, initialData };
 export type { InvoiceDetails };

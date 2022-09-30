@@ -12,9 +12,10 @@ import {
   PaymentTermsEnum,
   unMountFormConfig
 } from '../components/types';
-import { invoiceDataJson, InvoiceDetails } from '../data/invoice-data';
+import { initialData, InvoiceDetails } from '../data/invoice-data';
 import useFormRefs from '../hooks/useFormRefs';
 import '../styles/globals.css';
+import useFormInput from '../hooks/useFormInput';
 
 const initialItemCounterState = [
   { id: `itemLog-${Math.floor(Math.random() * 10000)}`, name: '', quantity: '0', price: '0' }
@@ -22,46 +23,36 @@ const initialItemCounterState = [
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [darkmode, setDarkmode] = useState(false);
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
   const [editFormState, setEditFormState] = useState(false);
   const [itemCounter, setItemCounter] = useState(initialItemCounterState);
-  const [filterByStatus, setFilterByStatus] = useState<FilteredStatusType>({
+  const [filterByStatus, setFilterByStatus] = useState({
     draft: true,
     pending: true,
     paid: true
   });
   const { formRefs, handleInput, setHandleInput, detailsInput, setDetailsInput } = useFormRefs();
+  const { userInfo, clientInfo, details, items } = useFormInput();
 
-  const {
-    data: invoiceDataSWR,
-    mutate
-  }: { data?: InvoiceDetails[]; mutate: KeyedMutator<unknown> } = useSwr(
-    invoiceDataJson,
-    (args) => JSON.parse(args),
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
-  );
+  type SwrReturnType = { data?: InvoiceDetails[]; mutate: KeyedMutator<unknown> };
+
+  const noValidationConfig = {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  };
+
+  const SWR: SwrReturnType = useSwr(initialData, (args) => JSON.parse(args), noValidationConfig);
 
   function invoicedataFilters() {
-    if (!invoiceDataSWR) return;
-    const filteredData = [];
-    if (filterByStatus.draft)
-      filteredData.push(
-        ...(invoiceDataSWR as InvoiceDetails[]).filter((item) => item.status === 'draft')
-      );
-    if (filterByStatus.paid)
-      filteredData.push(
-        ...(invoiceDataSWR as InvoiceDetails[]).filter((item) => item.status === 'paid')
-      );
-    if (filterByStatus.pending)
-      filteredData.push(
-        ...(invoiceDataSWR as InvoiceDetails[]).filter((item) => item.status === 'pending')
-      );
-    return filteredData;
+    if (!SWR.data) return;
+
+    const filter = [];
+    let status: keyof typeof filterByStatus;
+    for (status in filterByStatus) {
+      filterByStatus[status] && filter.push(...SWR.data.filter((item) => item.status === status));
+    }
+    return filter;
   }
 
   function mountForm() {
@@ -70,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   function editForm(id: string) {
-    const invoiceItem = invoiceDataSWR?.find((invoice) => invoice.id === id);
+    const invoiceItem = SWR.data?.find((invoice) => invoice.id === id);
     setEditFormState(true);
     setHandleInput({
       streetAddressInputValue: invoiceItem?.sender.street || '',
@@ -95,18 +86,18 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.push(`/${id}?edit`);
   }
 
-  function updateStatus(invoiceId: string, statusUpdate: 'paid' | 'draft' | 'pending') {
-    const newState = structuredClone(invoiceDataSWR as InvoiceDetails[]);
+  function updateStatus(invoiceId: string, statusUpdate: keyof typeof filterByStatus) {
+    const newState = structuredClone(SWR.data as InvoiceDetails[]);
     const invoiceIndex = newState.findIndex((invoice) => invoice.id === invoiceId);
     newState[invoiceIndex].status = statusUpdate;
-    mutate([...newState], { revalidate: false });
+    SWR.mutate([...newState], { revalidate: false });
   }
 
   function deleteInvoice(invoiceId: string) {
-    const newState = structuredClone(invoiceDataSWR as InvoiceDetails[]);
+    const newState = structuredClone(SWR.data as InvoiceDetails[]);
     const filteredItems = newState.filter((item) => item.id !== invoiceId);
     router.push('/');
-    mutate([...filteredItems], { revalidate: false });
+    SWR.mutate([...filteredItems], { revalidate: false });
   }
 
   function unmountForm(
@@ -135,7 +126,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       router.push('/');
     }
     if (config.eraseHistory) {
-      console.log('erasing history');
       setDetailsInput({
         date: new Date(),
         paymentTerms: PaymentTermsEnum['Net 1 Day']
@@ -179,9 +169,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   function saveChanges(
     options: { draft?: boolean; id?: string | undefined } = { draft: false, id: undefined }
   ) {
-    const invoiceItem = (invoiceDataSWR as InvoiceDetails[]).find(
-      (invoice) => invoice.id === options.id
-    );
+    const invoiceItem = (SWR.data as InvoiceDetails[]).find((invoice) => invoice.id === options.id);
     const newInvoice: InvoiceDetails = {
       id: invoiceItem ? invoiceItem.id : newIdTag(),
       createdAt: invoiceItem ? invoiceItem.createdAt : new Date().toISOString(),
@@ -205,14 +193,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       items: itemCounter,
       status: options.draft ? 'draft' : 'pending'
     };
-    if (!invoiceItem && Array.isArray(invoiceDataSWR))
-      mutate([...invoiceDataSWR, newInvoice], { revalidate: false });
-    if (invoiceItem && Array.isArray(invoiceDataSWR)) {
-      const newState = structuredClone(invoiceDataSWR);
+    if (!invoiceItem && Array.isArray(SWR.data))
+      SWR.mutate([...SWR.data, newInvoice], { revalidate: false });
+    if (invoiceItem && Array.isArray(SWR.data)) {
+      const newState = structuredClone(SWR.data);
       const invoiceItemIndex = newState.findIndex((invoice) => invoice.id === invoiceItem.id);
       newState.splice(invoiceItemIndex, 1, newInvoice);
       console.log(newInvoice);
-      mutate(newState, { revalidate: false });
+      SWR.mutate(newState, { revalidate: false });
     }
     clearForm();
   }
@@ -240,15 +228,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider attribute="class">
-      <Layout
-        darkmode={darkmode}
-        setDarkmode={setDarkmode}
-        formProps={formProps}
-        invoiceDataSWR={invoiceDataSWR ?? []}>
+      <Layout formProps={formProps} invoiceDataSWR={SWR.data ?? []}>
         <Component
           {...pageProps}
           {...formProps}
-          invoiceDataSWR={invoiceDataSWR}
+          invoiceDataSWR={SWR.data}
           filteredInvoiceDataSwr={invoicedataFilters()}
         />
       </Layout>
