@@ -1,18 +1,11 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { TrashCanSvg } from './IconComponents';
-
-interface itemCounter {
-  id: string;
-  name: string;
-  quantity: string;
-  price: string;
-}
+import { ItemCounterType } from './types';
 
 export default function InvoiceFormItemElement(props: {
-  invoiceFormVisbility: boolean;
   id: string;
-  itemCounter: itemCounter[];
-  setItemCounter: React.Dispatch<React.SetStateAction<itemCounter[]>>;
+  itemCounter: ItemCounterType[];
+  setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
 }) {
   const currentItemIndex = useMemo(() => {
     return props.itemCounter.findIndex((item) => item.id === props.id);

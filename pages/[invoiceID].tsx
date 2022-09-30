@@ -1,104 +1,30 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import {
-  DetailsInputType,
-  formRefsType,
-  InputRefs,
-  ItemCounterType,
-  unMountFormConfig
-} from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
 import GoBackHeader from '../components/GoBackHeader';
 import { AnimatePresence, motion } from 'framer-motion';
+import { amountDue, visualCurrency } from '../components/helpers';
+import Button from '../components/Button';
+import StatusElement from '../components/StatusElement';
+import InvoiceItemTable from '../components/InvoiceItemTable';
 
-const statusConfig: {
-  bg: string;
-  circleColor: string;
-  textColor: string;
-  text: string;
-} = {
-  bg: '',
-  circleColor: '',
-  textColor: '',
-  text: ''
-};
-
-function visualCurrency(amount: string) {
-  return Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD'
-  }).format(parseInt(amount) / 100);
-}
-
-function InvoiceItemTable(props: { itemName: string; quantity: string; price: string }) {
-  const amountDue = (parseInt(props.price) * parseInt(props.quantity)).toString();
-
-  return (
-    <div className="flex w-full flex-wrap text-slate-600 dark:text-slate-300 lg:grid lg:grid-cols-5">
-      <p className="w-full font-bold dark:font-medium lg:col-span-2 lg:block">{props.itemName}</p>
-      <p className="col-span-1 text-slate-400  dark:text-slate-300 lg:text-right lg:text-slate-600">
-        {props.quantity}
-        <span className="lg:hidden"> x </span>
-      </p>
-      <p className="col-span-1 pl-1 text-slate-400  dark:text-slate-300 lg:pl-1 lg:text-right lg:text-slate-600">
-        {visualCurrency(props.price)}
-      </p>
-      <p className="col-span-3 grow text-right text-slate-600 dark:text-slate-300 lg:col-span-1">
-        {visualCurrency(amountDue)}
-      </p>
-    </div>
-  );
-}
-
-export default function InvoiceId(props: {
-  invoiceDataSWR: InvoiceDetails[] | undefined;
-  detailsInput: DetailsInputType;
-  setDetailsInput: React.Dispatch<React.SetStateAction<DetailsInputType>>;
-  handleInput: InputRefs;
-  invoiceFormVisbility: boolean;
-  setInvoiceFormVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
-  itemCounter: ItemCounterType[];
-  setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
+export default function InvoiceId({
+  invoiceDataSWR,
+  deleteInvoice,
+  updateInvoiceStatus,
+  populateFormWithExisting,
+  unmountForm
+}: {
+  invoiceDataSWR: InvoiceDetails[];
   deleteInvoice: (invoiceId: string) => void;
-  updateStatus: (invoiceId: string, statusUpdate: 'paid' | 'draft' | 'pending') => void;
-  clearForm: () => void;
-  editForm: (id: string) => void;
-  mountForm: () => void;
-  unmountForm: (config?: unMountFormConfig) => void;
-  saveChanges: (options?: { draft: boolean }) => void;
-  formRefs: formRefsType;
+  updateInvoiceStatus: (invoiceId: string, statusUpdate: 'draft' | 'pending' | 'paid') => void;
+  populateFormWithExisting: (id: string) => void;
+  unmountForm: (invoiceIdParam: string | null) => void;
 }) {
   const router = useRouter();
-  const invoiceIdParam = router.query.invoiceID;
-  const invoiceItem = props.invoiceDataSWR?.find((invoice) => invoice.id === invoiceIdParam);
+  const invoiceIdParam = router?.query?.invoiceID?.toString();
+  const invoiceItem = invoiceDataSWR.find((invoice) => invoice.id === invoiceIdParam);
 
-  if (invoiceItem?.status === 'paid') {
-    statusConfig.bg = 'bg-green-500/10';
-    statusConfig.circleColor = 'bg-green-500';
-    statusConfig.textColor = 'text-green-500';
-    statusConfig.text = 'Paid';
-  }
-  if (invoiceItem?.status === 'pending') {
-    statusConfig.bg = 'bg-yellow-500/10';
-    statusConfig.circleColor = 'bg-yellow-500';
-    statusConfig.textColor = 'text-yellow-600';
-    statusConfig.text = 'Pending';
-  }
-  if (invoiceItem?.status === 'draft') {
-    statusConfig.bg = 'bg-slate-500/10';
-    statusConfig.circleColor = 'bg-slate-500';
-    statusConfig.textColor = 'text-slate-600';
-    statusConfig.text = 'Draft';
-  }
-
-  const amountDue = invoiceItem?.items.reduce(
-    (sum, current) => {
-      const itemAmount = parseInt(current.price) * parseInt(current.quantity);
-      sum.total = sum.total + itemAmount;
-      return sum;
-    },
-    { total: 0 }
-  );
   return (
     <AnimatePresence>
       <motion.div
@@ -107,32 +33,28 @@ export default function InvoiceId(props: {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="flex w-full max-w-4xl grow flex-col items-start px-4 pt-8 lg:p-12">
-        <GoBackHeader unmountForm={props.unmountForm} eraseHistory={true} invoiceId={null} />
+        <GoBackHeader onClick={() => unmountForm(null)} />
         <section className="mb-8 flex w-full items-center justify-between rounded-2xl bg-white p-6 dark:bg-slate-800 lg:p-8 ">
           <div className="flex w-full items-center justify-between gap-4 lg:w-auto">
             <p className="text-slate-500 dark:text-slate-300">Status</p>
-            <div
-              className={`col-span-3 flex w-32 items-center justify-center gap-3 rounded-lg ${statusConfig.bg} py-2`}>
-              <span className={`flex h-2 w-2 rounded-full ${statusConfig.circleColor}`}></span>
-              <p className={`font-bold ${statusConfig.textColor}`}>{statusConfig.text}</p>
-            </div>
+            <StatusElement status={invoiceItem?.status || 'pending'} />
           </div>
           <div className="hidden gap-3 lg:flex">
-            <button
-              onClick={() => props.editForm(invoiceItem?.id || '')}
-              className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600/70">
-              Edit
-            </button>
-            <button
-              onClick={() => props.deleteInvoice(invoiceItem?.id || '')}
-              className="rounded-full bg-red-400 py-4 px-7 font-semibold text-white transition hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700">
-              Delete
-            </button>
-            <button
-              onClick={() => props.updateStatus(invoiceItem?.id || '', 'paid')}
-              className="rounded-full bg-blue-500 py-4 px-7 font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
-              Mark as Paid
-            </button>
+            <Button
+              onClick={() => populateFormWithExisting(invoiceItem?.id || '')}
+              label="Edit"
+              style="light"
+            />
+            <Button
+              onClick={() => deleteInvoice(invoiceItem?.id || '')}
+              label="Delete"
+              style="error"
+            />
+            <Button
+              onClick={() => updateInvoiceStatus(invoiceItem?.id || '', 'paid')}
+              label="Mark as Paid"
+              style="primary"
+            />
           </div>
         </section>
         <section className="w-full rounded-2xl bg-white p-8 dark:bg-slate-800">
@@ -212,7 +134,7 @@ export default function InvoiceId(props: {
             <div className="flex items-center justify-between bg-slate-600 p-6 text-white dark:bg-slate-900/50 lg:p-8">
               <p className="dark:text-slate-400">Amount Due</p>
               <p className="text-xl font-bold lg:text-4xl">
-                {visualCurrency(amountDue?.total.toString() || '0')}
+                {visualCurrency(amountDue(invoiceItem?.items || [])?.total.toString() || '0')}
               </p>
             </div>
           </div>
@@ -220,21 +142,21 @@ export default function InvoiceId(props: {
       </motion.div>
       <div className="flex w-full grow items-end pt-8 lg:hidden">
         <div className="flex w-full justify-center gap-3 bg-white py-4 px-4 text-sm dark:bg-slate-800">
-          <button
-            onClick={() => props.editForm(invoiceItem?.id || '')}
-            className="rounded-full bg-slate-100 py-4 px-7 font-semibold text-slate-500/70 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600/70">
-            Edit
-          </button>
-          <button
-            onClick={() => props.deleteInvoice(invoiceItem?.id || '')}
-            className="rounded-full bg-red-400 py-4 px-7 font-semibold text-white transition hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700">
-            Delete
-          </button>
-          <button
-            onClick={() => props.updateStatus(invoiceItem?.id || '', 'paid')}
-            className="rounded-full bg-blue-500 px-5 py-3 font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 lg:py-4 lg:px-7">
-            Mark as Paid
-          </button>
+          <Button
+            onClick={() => populateFormWithExisting(invoiceItem?.id || '')}
+            label="edit"
+            style="light"
+          />
+          <Button
+            onClick={() => deleteInvoice(invoiceItem?.id || '')}
+            label="Delete"
+            style="error"
+          />
+          <Button
+            onClick={() => updateInvoiceStatus(invoiceItem?.id || '', 'paid')}
+            label="Mark as Paid"
+            style="primary"
+          />
         </div>
       </div>
     </AnimatePresence>

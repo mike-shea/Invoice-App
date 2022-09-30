@@ -2,39 +2,28 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import InvoiceList from '../components/InvoiceList';
-import {
-  DetailsInputType,
-  FilteredStatusType,
-  formRefsType,
-  InputRefs,
-  ItemCounterType,
-  unMountFormConfig
-} from '../components/types';
-import { InvoiceDetails } from '../data/invoice-data';
 import { AnimatePresence, motion } from 'framer-motion';
+import { InvoiceDetails } from '../data/invoice-data';
+import { inputFormStateProps } from '../types/InputFormTypes';
+import { FilteredStatusType } from '../components/types';
 
-export default function Home(props: {
+export default function Home({
+  filterByStatus,
+  setFilterByStatus,
+  filteredInvoiceDataSwr,
+  invoiceDataSWR,
+  mountNewInvoiceForm
+}: {
   filterByStatus: FilteredStatusType;
   setFilterByStatus: React.Dispatch<React.SetStateAction<FilteredStatusType>>;
   filteredInvoiceDataSwr: InvoiceDetails[];
   invoiceDataSWR: InvoiceDetails[];
-  detailsInput: DetailsInputType;
-  setDetailsInput: React.Dispatch<React.SetStateAction<DetailsInputType>>;
-  handleInput: InputRefs;
-  invoiceFormVisbility: boolean;
-  setInvoiceFormVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
-  itemCounter: ItemCounterType[];
-  setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
-  clearForm: () => void;
-  mountForm: () => void;
-  unmountForm: (config?: unMountFormConfig) => void;
-  saveChanges: (options?: { draft: boolean }) => void;
-  formRefs: formRefsType;
-}) {
+  mountNewInvoiceForm: () => void;
+} & inputFormStateProps) {
   const router = useRouter();
   useEffect(() => {
     if (router.asPath === '/?new-invoice') {
-      props.setInvoiceFormVisiblity(true);
+      mountNewInvoiceForm();
     }
   }, [router.asPath]);
   return (
@@ -46,13 +35,12 @@ export default function Home(props: {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}>
         <Header
-          clearForm={props.clearForm}
-          filterByStatus={props.filterByStatus}
-          setFilterByStatus={props.setFilterByStatus}
-          mountForm={props.mountForm}
-          invoiceItemLength={props.invoiceDataSWR?.length}
+          filterByStatus={filterByStatus}
+          setFilterByStatus={setFilterByStatus}
+          mountForm={mountNewInvoiceForm}
+          invoiceItemLength={invoiceDataSWR?.length}
         />
-        <InvoiceList invoiceData={props.filteredInvoiceDataSwr} />
+        <InvoiceList invoiceData={filteredInvoiceDataSwr} />
       </motion.div>
     </AnimatePresence>
   );

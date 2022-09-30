@@ -4,19 +4,19 @@ import { ExpandMoreSvg, PlusSvg } from './IconComponents';
 import { FilteredStatusType } from './types';
 import useHandleClickOutside from '../hooks/useHandleClickOutside';
 
-export default function Header(props: {
+export default function Header({
+  filterByStatus,
+  setFilterByStatus,
+  invoiceItemLength,
+  mountForm
+}: {
   filterByStatus: FilteredStatusType;
   setFilterByStatus: React.Dispatch<React.SetStateAction<FilteredStatusType>>;
   invoiceItemLength: number;
   mountForm: () => void;
-  clearForm: () => void;
 }) {
   const { componentVisibleRef, isComponentVisible, setIsComponentVisible } =
     useHandleClickOutside(false);
-
-  function newInvoice() {
-    props.mountForm();
-  }
 
   return (
     <header className="flex w-full flex-row items-center justify-between">
@@ -27,7 +27,7 @@ export default function Header(props: {
 
         <p className="text-sm text-slate-500 dark:text-slate-500">
           <span className="hidden lg:inline-block">There are&nbsp;</span>
-          {props.invoiceItemLength ?? 0}
+          {invoiceItemLength ?? 0}
           <span className="hidden lg:inline-block">&nbsp;total</span>&nbsp;invoices
         </p>
       </div>
@@ -51,14 +51,14 @@ export default function Header(props: {
           {isComponentVisible && (
             <FilterListPopUp
               componentVisibleRef={componentVisibleRef}
-              filterByStatus={props.filterByStatus}
-              setFilterByStatus={props.setFilterByStatus}
+              filterByStatus={filterByStatus}
+              setFilterByStatus={setFilterByStatus}
             />
           )}
         </div>
 
         <button
-          onClick={newInvoice}
+          onClick={() => mountForm()}
           className="flex items-center gap-2 rounded-full bg-blue-600 py-2 pl-2 pr-5 font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-800 dark:hover:bg-blue-900 lg:gap-4">
           <div className="rounded-full bg-white p-1">
             <PlusSvg className="fill-blue-500" />
