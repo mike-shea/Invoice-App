@@ -1,9 +1,9 @@
-import { PaymentTermsEnum } from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
+import { PaymentTermsEnum } from './invoiceDataTypes';
 
 type setState<T> = React.Dispatch<React.SetStateAction<T>>;
 
-interface UserInfo {
+interface UserInfoType {
   state: {
     street: string;
     city: string;
@@ -18,7 +18,7 @@ interface UserInfo {
   };
 }
 
-interface ClientInfo {
+interface ClientInfoType {
   state: {
     clientName: string;
     clientEmail: string;
@@ -37,7 +37,7 @@ interface ClientInfo {
   };
 }
 
-interface Details {
+interface DetailsType {
   state: {
     projectDescription: string;
     date: Date;
@@ -57,12 +57,12 @@ interface ItemCounterType {
   price: string;
 }
 
-interface Items {
+interface ItemsType {
   state: ItemCounterType[];
   setState: setState<ItemCounterType[]>;
 }
 
-type FunctionsType = {
+interface functionsType {
   clearFormState: () => void;
   setFormState: (invoice: InvoiceDetails) => void;
   createNewInvoice: (
@@ -70,21 +70,13 @@ type FunctionsType = {
     status: 'pending' | 'draft'
   ) => InvoiceDetails;
   addNewItem: () => void;
-};
-interface inputFormStateProps {
-  userInfo: UserInfo;
-  clientInfo: ClientInfo;
-  details: Details;
-  items: Items;
-  functions: FunctionsType;
 }
 
 export type {
-  Items,
-  FunctionsType,
+  functionsType,
+  ItemsType,
   ItemCounterType,
-  Details,
-  ClientInfo,
-  UserInfo,
-  inputFormStateProps
+  DetailsType,
+  ClientInfoType,
+  UserInfoType
 };

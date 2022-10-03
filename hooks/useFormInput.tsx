@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { newIdTag } from '../components/helpers';
-import { PaymentTermsEnum } from '../components/types';
 import { InvoiceDetails } from '../data/invoice-data';
-import { inputFormStateProps } from '../types/InputFormTypes';
+import { PaymentTermsEnum } from '../types/invoiceDataTypes';
 
 const randomNum = Math.floor(Math.random() * 10000);
 const initialItemCounterState = [
   { id: `itemLog-${randomNum}`, name: '', quantity: '0', price: '0' }
 ];
 
-export default function useFormInput(): inputFormStateProps {
+export default function useFormInput() {
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');

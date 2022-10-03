@@ -3,9 +3,7 @@ import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import InvoiceList from '../components/InvoiceList';
 import { AnimatePresence, motion } from 'framer-motion';
-import { InvoiceDetails } from '../data/invoice-data';
-import { inputFormStateProps } from '../types/InputFormTypes';
-import { FilteredStatusType } from '../components/types';
+import { IndexProps } from '../types/propTypes';
 
 export default function Home({
   filterByStatus,
@@ -13,13 +11,7 @@ export default function Home({
   filteredInvoiceDataSwr,
   invoiceDataSWR,
   mountNewInvoiceForm
-}: {
-  filterByStatus: FilteredStatusType;
-  setFilterByStatus: React.Dispatch<React.SetStateAction<FilteredStatusType>>;
-  filteredInvoiceDataSwr: InvoiceDetails[];
-  invoiceDataSWR: InvoiceDetails[];
-  mountNewInvoiceForm: () => void;
-} & inputFormStateProps) {
+}: IndexProps) {
   const router = useRouter();
   useEffect(() => {
     if (router.asPath === '/?new-invoice') {
@@ -37,7 +29,7 @@ export default function Home({
         <Header
           filterByStatus={filterByStatus}
           setFilterByStatus={setFilterByStatus}
-          mountForm={mountNewInvoiceForm}
+          mountNewInvoiceForm={mountNewInvoiceForm}
           invoiceItemLength={invoiceDataSWR?.length}
         />
         <InvoiceList invoiceData={filteredInvoiceDataSwr} />

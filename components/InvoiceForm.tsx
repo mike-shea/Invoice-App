@@ -5,9 +5,9 @@ import useMediaQuery from '../hooks/useMediaQuery';
 
 import { useRouter } from 'next/router';
 import InvoiceFormInputs from './InvoiceFormInputs';
-import { inputFormStateProps } from '../types/InputFormTypes';
 import InvoiceFormHeader from './InvoiceFormHeader';
 import Button from './Button';
+import { InvoiceFormProps } from '../types/propTypes';
 
 export default function InvoiceForm({
   userInfo,
@@ -17,10 +17,7 @@ export default function InvoiceForm({
   functions,
   unmountForm,
   saveInvoice
-}: {
-  unmountForm: (invoiceIdParam: string | null) => void;
-  saveInvoice: (id: string | null, status: 'draft' | 'pending') => void;
-} & inputFormStateProps) {
+}: InvoiceFormProps) {
   const minWidthLg = useMediaQuery('(min-width: 1024px)');
 
   const router = useRouter();

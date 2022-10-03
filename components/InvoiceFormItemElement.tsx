@@ -1,17 +1,21 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { ItemCounterType } from '../types/inputStateTypes';
 import { TrashCanSvg } from './IconComponents';
-import { ItemCounterType } from './types';
 
-export default function InvoiceFormItemElement(props: {
+export default function InvoiceFormItemElement({
+  id,
+  itemCounter,
+  setItemCounter
+}: {
   id: string;
   itemCounter: ItemCounterType[];
   setItemCounter: React.Dispatch<React.SetStateAction<ItemCounterType[]>>;
 }) {
   const currentItemIndex = useMemo(() => {
-    return props.itemCounter.findIndex((item) => item.id === props.id);
-  }, [props.id, props.itemCounter]);
+    return itemCounter.findIndex((item) => item.id === id);
+  }, [id, itemCounter]);
 
-  const currentItem = props.itemCounter[currentItemIndex];
+  const currentItem = itemCounter[currentItemIndex];
 
   const [itemNameInput, setItemNameInput] = useState(currentItem.name || '');
   const [itemPriceInput, setItemPriceInput] = useState<string>(currentItem.price || '0');
@@ -51,7 +55,7 @@ export default function InvoiceFormItemElement(props: {
 
   useEffect(() => {
     if (parseInt(itemQuantityInput) > 0) {
-      props.setItemCounter((prevState) => {
+      setItemCounter((prevState) => {
         const newState = structuredClone(prevState);
         if (newState[currentItemIndex]) {
           newState[currentItemIndex].quantity = itemQuantityInput;
@@ -63,7 +67,7 @@ export default function InvoiceFormItemElement(props: {
 
   useEffect(() => {
     if (itemNameInput.length > 0) {
-      props.setItemCounter((prevState) => {
+      setItemCounter((prevState) => {
         const newState = [...prevState];
         if (newState[currentItemIndex]) {
           newState[currentItemIndex].name = itemNameInput;
@@ -75,7 +79,7 @@ export default function InvoiceFormItemElement(props: {
 
   useEffect(() => {
     if (parseInt(itemPriceInput) > 0) {
-      props.setItemCounter((prevState) => {
+      setItemCounter((prevState) => {
         const newState = [...prevState];
         if (newState[currentItemIndex]) {
           newState[currentItemIndex].price = itemPriceInput;
@@ -132,9 +136,9 @@ export default function InvoiceFormItemElement(props: {
         <label className="invisible">Delete</label>
         <button
           onClick={() => {
-            props.setItemCounter((prevState) => {
+            setItemCounter((prevState) => {
               const newState = [...prevState];
-              return newState.filter((item) => item.id !== props.id);
+              return newState.filter((item) => item.id !== id);
             });
           }}
           type="button">

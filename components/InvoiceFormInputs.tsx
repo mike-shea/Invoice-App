@@ -4,19 +4,14 @@ import TextInput from './TextInput';
 import DateInput from './DateInput';
 import InvoiceFormItemElement from './InvoiceFormItemElement';
 
-import { ClientInfo, Details, Items, UserInfo } from '../types/InputFormTypes';
+import { InvoiceFormInputsProps } from '../types/propTypes';
 
 export default function InvoiceFormInputs({
   userInfo,
   clientInfo,
   details,
   items
-}: {
-  userInfo: UserInfo;
-  clientInfo: ClientInfo;
-  details: Details;
-  items: Items;
-}) {
+}: InvoiceFormInputsProps) {
   return (
     <form>
       <FieldSet legendLabel="Sender">
@@ -78,7 +73,7 @@ export default function InvoiceFormInputs({
         </div>
       </FieldSet>
       <FieldSet legendLabel="Details">
-        <DateInput {...details} />
+        <DateInput details={details} />
       </FieldSet>
       <FieldSet legendLabel="Items to Add">
         <ul className="flex flex-col gap-y-8 ">

@@ -10,30 +10,16 @@ import '../styles/globals.css';
 import Layout from '../components/Layout';
 import { initialData, InvoiceDetails } from '../data/invoice-data';
 import useFormInput from '../hooks/useFormInput';
-import noValidationConfig from '../data/SWR-config';
+import noValidationConfig, { initialFilter } from '../data/SWR-config';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
-  const [filterByStatus, setFilterByStatus] = useState({
-    draft: true,
-    pending: true,
-    paid: true
-  });
+  const [filterByStatus, setFilterByStatus] = useState(initialFilter);
   const { userInfo, clientInfo, details, items, functions } = useFormInput();
 
   type SwrReturnType = { data?: InvoiceDetails[]; mutate: KeyedMutator<unknown> };
   const SWR: SwrReturnType = useSwr(initialData, (args) => JSON.parse(args), noValidationConfig);
-
-  function invoicedataFilters() {
-    if (!SWR.data) return;
-    const filter = [];
-    let status: keyof typeof filterByStatus;
-    for (status in filterByStatus) {
-      filterByStatus[status] && filter.push(...SWR.data.filter((item) => item.status === status));
-    }
-    return filter;
-  }
 
   function mountNewInvoiceForm() {
     setInvoiceFormVisiblity(true);
@@ -103,6 +89,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     SWR.mutate(newState, { revalidate: false });
   }
 
+  function filterInvoiceByStatus() {
+    if (!SWR.data) return;
+    const filter = [];
+    let status: keyof typeof filterByStatus;
+    for (status in filterByStatus) {
+      filterByStatus[status] && filter.push(...SWR.data.filter((item) => item.status === status));
+    }
+    return filter;
+  }
+
   const allInputState = { userInfo, clientInfo, details, items, functions };
   const allActions = {
     saveInvoice,
@@ -116,10 +112,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class">
       <Layout
-        {...allInputState}
+        allInputState={allInputState}
         saveInvoice={saveInvoice}
         unmountForm={unmountForm}
-        invoiceFormVisbility={invoiceFormVisbility}>
+        invoiceFormVisibility={invoiceFormVisbility}>
         <Component
           {...pageProps}
           {...allInputState}
@@ -127,7 +123,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           filterByStatus={filterByStatus}
           setFilterByStatus={setFilterByStatus}
           invoiceDataSWR={SWR.data ?? []}
-          filteredInvoiceDataSwr={invoicedataFilters()}
+          filteredInvoiceDataSwr={filterInvoiceByStatus()}
         />
       </Layout>
     </ThemeProvider>

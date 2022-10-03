@@ -1,27 +1,4 @@
-import { PaymentTermsEnum } from '../components/types';
-import type { ItemCounterType } from '../components/types';
-
-interface addressDetails {
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
-}
-
-interface InvoiceDetails {
-  id: string;
-  createdAt: string;
-  paymentDue: string;
-  description: string;
-  paymentTerms: PaymentTermsEnum;
-  sender: addressDetails;
-  client: {
-    name: string;
-    email: string;
-  } & addressDetails;
-  items: ItemCounterType[];
-  status: 'paid' | 'pending' | 'draft';
-}
+import { InvoiceDetails, PaymentTermsEnum } from '../types/invoiceDataTypes';
 
 const invoiceData: InvoiceDetails[] = [
   {

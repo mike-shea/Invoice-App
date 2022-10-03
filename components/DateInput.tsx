@@ -1,9 +1,9 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import { Details } from '../types/InputFormTypes';
-import { PaymentTermsEnum } from './types';
+import { PaymentTermsEnum } from '../types/invoiceDataTypes';
+import { detailsProp } from '../types/singlePropType';
 
-export default function DateInput(details: Details) {
+export default function DateInput({ details }: detailsProp) {
   const PaymentTermsEnumToOptions = (
     Object.keys(PaymentTermsEnum) as Array<keyof typeof PaymentTermsEnum>
   ).map((item) => <option key={item}>{PaymentTermsEnum[item]}</option>);

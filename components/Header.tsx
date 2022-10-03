@@ -1,20 +1,15 @@
 import React from 'react';
 import FilterListPopUp from './filterListPopUp';
 import { ExpandMoreSvg, PlusSvg } from './IconComponents';
-import { FilteredStatusType } from './types';
 import useHandleClickOutside from '../hooks/useHandleClickOutside';
+import { HeaderProps } from '../types/propTypes';
 
 export default function Header({
   filterByStatus,
   setFilterByStatus,
   invoiceItemLength,
-  mountForm
-}: {
-  filterByStatus: FilteredStatusType;
-  setFilterByStatus: React.Dispatch<React.SetStateAction<FilteredStatusType>>;
-  invoiceItemLength: number;
-  mountForm: () => void;
-}) {
+  mountNewInvoiceForm
+}: HeaderProps) {
   const { componentVisibleRef, isComponentVisible, setIsComponentVisible } =
     useHandleClickOutside(false);
 
@@ -58,7 +53,7 @@ export default function Header({
         </div>
 
         <button
-          onClick={() => mountForm()}
+          onClick={() => mountNewInvoiceForm()}
           className="flex items-center gap-2 rounded-full bg-blue-600 py-2 pl-2 pr-5 font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-800 dark:hover:bg-blue-900 lg:gap-4">
           <div className="rounded-full bg-white p-1">
             <PlusSvg className="fill-blue-500" />

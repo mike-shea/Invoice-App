@@ -4,4 +4,11 @@ const noValidationConfig = {
   revalidateOnReconnect: false
 };
 
+const initialFilter = {
+  draft: true,
+  pending: true,
+  paid: true
+};
+
 export default noValidationConfig;
+export { initialFilter };

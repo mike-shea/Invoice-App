@@ -1,4 +1,4 @@
-import { ItemCounterType } from './types';
+import { ItemCounterType } from '../types/inputStateTypes';
 
 function randomNumber() {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';

@@ -1,10 +1,6 @@
 import { visualCurrency } from './helpers';
 
-export default function InvoiceItemTable(props: {
-  itemName: string;
-  quantity: string;
-  price: string;
-}) {
+export default function InvoiceTable(props: { itemName: string; quantity: string; price: string }) {
   const amountDue = (parseInt(props.price) * parseInt(props.quantity)).toString();
 
   return (
