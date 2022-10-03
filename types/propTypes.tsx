@@ -1,7 +1,7 @@
 import {
   unmountFormProp,
   saveInvoiceProp,
-  children,
+  childrenProp,
   invoiceFormVisibilityProp,
   allInputStateProp,
   userInfoProp,
@@ -21,7 +21,7 @@ import {
 
 type InvoiceLayoutProps = unmountFormProp &
   saveInvoiceProp &
-  children &
+  childrenProp &
   invoiceFormVisibilityProp &
   allInputStateProp;
 
