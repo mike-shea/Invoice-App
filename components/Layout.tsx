@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { AnimatePresence } from 'framer-motion';
 import InvoiceForm from '../components/InvoiceForm';
 import Nav from './Nav';
-import { InvoiceLayoutProps } from '../types/types';
+import { InvoiceLayoutProps } from '../types/propTypes';
 
 export default function Layout({
   unmountForm,
