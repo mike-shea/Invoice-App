@@ -21,7 +21,7 @@ export default function useFormInput() {
   const [clientCountry, setClientCountry] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [date, setDate] = useState(new Date());
-  const [paymentTerms, setPaymentTerms] = useState(PaymentTermsEnum['Net 1 Day']);
+  const [paymentTerms, setPaymentTerms] = useState<keyof typeof PaymentTermsEnum>('Net 1 Day');
   const [itemCounter, setItemCounter] = useState(initialItemCounterState);
 
   function clearFormState() {
@@ -32,7 +32,7 @@ export default function useFormInput() {
     setClientPostalCode('');
     setProjectDescription('');
     setDate(new Date());
-    setPaymentTerms(PaymentTermsEnum['Net 1 Day']);
+    setPaymentTerms('Net 1 Day');
     setItemCounter(initialItemCounterState);
   }
 
@@ -44,7 +44,7 @@ export default function useFormInput() {
     setClientPostalCode(invoice.client.postalCode || '');
     setProjectDescription(invoice.description || '');
     setDate(new Date(invoice.paymentDue || new Date()));
-    setPaymentTerms(PaymentTermsEnum[`${invoice.paymentTerms || 'Net 1 Day'}`]);
+    setPaymentTerms(invoice.paymentTerms || 'Net 1 Day');
     setItemCounter(invoice.items || []);
   }
 

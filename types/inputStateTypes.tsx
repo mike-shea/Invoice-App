@@ -41,12 +41,12 @@ interface DetailsType {
   state: {
     projectDescription: string;
     date: Date;
-    paymentTerms: PaymentTermsEnum;
+    paymentTerms: keyof typeof PaymentTermsEnum;
   };
   setState: {
     setProjectDescription: setState<string>;
     setDate: setState<Date>;
-    setPaymentTerms: setState<PaymentTermsEnum>;
+    setPaymentTerms: setState<keyof typeof PaymentTermsEnum>;
   };
 }
 

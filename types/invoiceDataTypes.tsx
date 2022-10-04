@@ -1,4 +1,4 @@
-import { ItemCounterType } from './types';
+import { ItemCounterType } from './inputStateTypes';
 
 enum PaymentTermsEnum {
   'Net 1 Day' = 'Net 1 Day',
@@ -19,7 +19,7 @@ interface InvoiceDetails {
   createdAt: string;
   paymentDue: string;
   description: string;
-  paymentTerms: PaymentTermsEnum;
+  paymentTerms: keyof typeof PaymentTermsEnum;
   sender: addressDetails;
   client: {
     name: string;
@@ -29,6 +29,24 @@ interface InvoiceDetails {
   status: 'paid' | 'pending' | 'draft';
 }
 
+interface InvoiceDetailsJson {
+  [id: string]: {
+    createdAt: string;
+    paymentDue: string;
+    description: string;
+    paymentTerms: keyof typeof PaymentTermsEnum;
+    sender: addressDetails;
+    client: {
+      name: string;
+      email: string;
+    } & addressDetails;
+    items: {
+      [id: string]: ItemCounterType;
+    };
+    status: 'paid' | 'pending' | 'draft';
+  };
+}
+
 export { PaymentTermsEnum };
 
-export type { InvoiceDetails };
+export type { InvoiceDetails, InvoiceDetailsJson };
