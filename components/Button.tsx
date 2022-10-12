@@ -21,7 +21,7 @@ export default function Button({
       }
       ${
         style === 'dark' &&
-        'bg-slate-600 text-slate-200 hover:bg-slate-200 dark:border dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800/30 '
+        'bg-slate-500 text-white hover:bg-slate-600 dark:border dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800/30 '
       }
       ${
         style === 'error' &&

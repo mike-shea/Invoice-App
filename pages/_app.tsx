@@ -19,9 +19,10 @@ const initialFilter = {
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const { invoiceData, isError, isLoading, invoiceaMutate } = useSampleData();
+  const { userInfo, clientInfo, details, items, functions } = useFormInput();
+
   const [invoiceFormVisbility, setInvoiceFormVisiblity] = useState(false);
   const [filterByStatus, setFilterByStatus] = useState(initialFilter);
-  const { userInfo, clientInfo, details, items, functions } = useFormInput();
 
   function mountNewInvoiceForm() {
     setInvoiceFormVisiblity(true);
@@ -99,7 +100,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       filterByStatus[status] &&
         filter.push(...invoiceData.filter((item) => item.status === status));
     }
-    return filter;
+    return filter.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   const allInputState = { userInfo, clientInfo, details, items, functions };
