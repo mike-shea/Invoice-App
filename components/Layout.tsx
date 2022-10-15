@@ -19,7 +19,7 @@ export default function Layout({
         <meta name="description" content="created by oh-that-mike" />
       </Head>
       <div className="flex flex-col lg:flex-row">
-        <Nav />
+        <Nav unmountForm={unmountForm} />
         <AnimatePresence>
           {invoiceFormVisibility && (
             <InvoiceForm unmountForm={unmountForm} saveInvoice={saveInvoice} {...allInputState} />

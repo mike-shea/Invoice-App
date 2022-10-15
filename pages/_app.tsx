@@ -32,9 +32,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   function unmountForm(invoiceIdParam: string | null) {
     setInvoiceFormVisiblity(false);
     if (invoiceIdParam) {
-      functions.clearFormState();
       router.push(`/${invoiceIdParam?.toString()}`);
-    } else router.push('/');
+    } else {
+      router.push('/');
+    }
+    functions.clearFormState();
   }
 
   function populateFormWithExisting(id: string) {
